@@ -49,6 +49,7 @@ class VisitorController extends Controller
             'tujuan' => 'required',
             'foto_ktp' => 'required',
             'pos_asal' => 'required',
+            'no_hp' => 'required',
         ]);
         if ($validator->fails()) {
             // dd($validator->errors());
@@ -69,6 +70,7 @@ class VisitorController extends Controller
             'foto_ktp' => $image_link,
             'nomor_kartu' => $request->nomor_kartu,
             'pos_asal' => $request->pos_asal,
+            'no_hp' => $request->no_hp
         ]);
 
         if($visitor){

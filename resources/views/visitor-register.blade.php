@@ -96,7 +96,7 @@
             </div>
           </div>
         </div>
-        <p>Foto Lembar Depan Formulir KIB 24Jam</p>
+        <p>Foto KTP</p>
         <div class="form-group">
             <div class="input-group">
               <div class="custom-file">
@@ -105,6 +105,15 @@
               </div>
             </div>
           </div>
+        <p>No HP</p>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" name="no_hp" placeholder="Jawaban Anda">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-phoned"></span>
+            </div>
+          </div>
+        </div>
         <p>Nomor Kartu Visitor</p>
         <p>Diisi oleh Visitor atau Admin POS</p>
         <div class="input-group mb-3">

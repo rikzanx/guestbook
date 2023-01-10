@@ -20,6 +20,7 @@ class Visitor extends Model
         'keluar',
         'pos_asal',
         'lainnya',
+        'no_hp',
         'verifikasi'
     ];
 }

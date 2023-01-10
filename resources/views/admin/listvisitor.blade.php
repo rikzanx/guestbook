@@ -60,6 +60,7 @@
                     <th>Pos Asal</th>
                     <th>Tujuan</th>
                     <th>Foto KTP</th>
+                    <th>No HP</th>
                     <th>Nomor Kartu</th>
                     <th>Status</th>
                     <th>Tanggal</th>
@@ -82,6 +83,7 @@
                         <td>
                           <a href="{{ asset($item->foto_ktp) }}" target="_blank">Lihat foto</a>
                         </td>
+                        <td>{{ $item->no_hp }}</td>
                         <td>{{ $item->nomor_kartu }}</td>
                         @if($item->verifikasi != "Terverifikasi")
                         <td><i class="fas fa-trasss" style="color:red;" ></i> {{ $item->verifikasi }}</td>
@@ -117,6 +119,7 @@
                       <th>Pos Asal</th>
                       <th>Tujuan</th>
                       <th>Foto KTP</th>
+                      <th>No HP</th>
                       <th>Nomor Kartu</th>
                       <th>Status</th>
                       <th>Tanggal</th>
