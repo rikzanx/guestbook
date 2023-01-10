@@ -25,10 +25,10 @@ class PosVisitorController extends Controller
     public function index(Request $request )
     {
         $date = Carbon::today();
-        $visitors = Visitor::whereDate('created_at', '=', Carbon::today())->where('verifikasi',"Terverifikasi")->orderBy('id','DESC')->get();
+        $visitors = Visitor::whereDate('created_at', '=', Carbon::today())->orderBy('id','DESC')->get();
         if($request->has("date")){
             $date = Carbon::createFromFormat('Y-m-d',  $request->date); 
-            $visitors = Visitor::whereDate('created_at', '=', $request->date)->where('verifikasi',"Terverifikasi")->orderBy('id','DESC')->get();
+            $visitors = Visitor::whereDate('created_at', '=', $request->date)->orderBy('id','DESC')->get();
         }
         
         return view('pos.listvisitor',[
