@@ -15,12 +15,6 @@ class AdminController extends Controller
     protected $user;
     public function __construct(Request $request)
     {
-        // dd(Auth::user());
-        // $value = $request->session()->get('is_admin');
-        // dd($value);
-        // dd(session('is_admin'));
-        // $value = $request->session()->get('key');
-        // dd($this->user);
             $this->middleware('auth',['tes' => 'egg']);
     }
     /**
@@ -28,11 +22,18 @@ class AdminController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        $guests = Guest::orderBy('id','DESC')->get();
+        $date = Carbon::today();
+        $guests = Guest::whereDate('created_at', '=', Carbon::today())->orderBy('id','DESC')->get();
+        if($request->has("date")){
+            $date = Carbon::createFromFormat('Y-m-d',  $request->date); 
+            $guests = Guest::whereDate('created_at', '=', $request->date)->orderBy('id','DESC')->get();
+        }
+        
         return view('admin.listguest',[
-            'guests' => $guests
+            'guests' => $guests,
+            'date' => $date->format('Y-m-d')
         ]);
     }
 
@@ -95,25 +96,38 @@ class AdminController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'name' => 'required',
-            'email' => 'required',
-            'telp' => 'required',
-            'keterangan' => 'required'
+            'nama_badan_usaha' => 'required',
+            'lokasi_pekerjaan'=> 'required',
+            'departemen'=> 'required',
+            'jenis_pekerjaan'=> 'required',
+            'jumlah_personil'=> 'required',
+            'nama_safety_upload'=> 'required',
+            'no_hp'=> 'required',
         ]);
         if ($validator->fails()) {
             return redirect()->route("guest.index")->with('danger', $validator->errors()->first());
         }
 
         $guest = Guest::findOrFail($id);
-        $guest->name = $request->name;
-        $guest->email = $request->email;
-        $guest->telp = $request->telp;
-        $guest->keterangan = $request->keterangan;
+        $guest->nama_badan_usaha = $request->nama_badan_usaha;
+        $guest->lokasi_pekerjaan = $request->lokasi_pekerjaan;
+        $guest->departemen = $request->departemen;
+        $guest->jenis_pekerjaan = $request->jenis_pekerjaan;
+        $guest->jumlah_personil = $request->jumlah_personil;
+        $guest->nama_safety_upload = $request->nama_safety_upload;
+        $guest->no_hp = $request->no_hp;
+        if($request->has('foto_lembar_depan')){
+            $uploadFolder = "img/foto_lembar_depan/";
+            $image = $request->file('foto_lembar_depan');
+            $imageName = time().'-'.$image->getClientOriginalName();
+            $image->move(public_path($uploadFolder), $imageName);
+            $guest->foto_lembar_depan = $uploadFolder.$imageName;
+        }
 
         if($guest->save()){
-            return redirect()->route("guest.index")->with('status', "Sukses mengedit guest");
+            return redirect()->route("guest.index")->with('status', "Sukses mengedit KIB");
         }else{
-            return redirect()->route("guest.index")->with('danger', "Terjadi Kesalahan saat mengedit guest.");
+            return redirect()->route("guest.index")->with('danger', "Terjadi Kesalahan saat mengedit KIB.");
         }
     }
 

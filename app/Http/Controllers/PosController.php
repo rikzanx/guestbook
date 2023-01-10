@@ -21,12 +21,18 @@ class PosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        // dd('a');
-        $guests = Guest::orderBy('id','desc')->where('verifikasi','terverifikasi')->get();
+        $date = Carbon::today();
+        $guests = Guest::whereDate('created_at', '=', Carbon::today())->where('verifikasi','Terverifikasi')->orderBy('id','DESC')->get();
+        if($request->has("date")){
+            $date = Carbon::createFromFormat('Y-m-d',  $request->date); 
+        $guests = Guest::whereDate('created_at', '=', $request->date)->where('verifikasi','Terverifikasi')->orderBy('id','DESC')->get();
+        }
+        
         return view('pos.listguest',[
-            'guests' => $guests
+            'guests' => $guests,
+            'date' => $date->format('Y-m-d')
         ]);
     }
 

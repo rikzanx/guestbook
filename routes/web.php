@@ -7,6 +7,9 @@ use App\Http\Controllers\BlokirController;
 use App\Http\Controllers\CustomAuthController;
 use App\Http\Controllers\PosCustomAuthController;
 use App\Http\Controllers\PosController;
+use App\Http\Controllers\VisitorController;
+use App\Http\Controllers\AdminVisitorController;
+use App\Http\Controllers\PosVisitorController;
 
 /*
 |--------------------------------------------------------------------------
@@ -22,6 +25,7 @@ use App\Http\Controllers\PosController;
 Route::get('/', [GuestController::class, 'create'])->name('index');  
 Route::get('admin/login', [CustomAuthController::class, 'index'])->name('login');
 Route::post('guest/store', [GuestController::class,'store'])->name('gueststore');  
+Route::resource('visitor',VisitorController::class);
 Route::get('guest/verifikasi/{id}',[AdminController::class,'verifikasi'])->name('verifikasikib');
 Route::group(['prefix' => 'admin'],function(){
     Route::post('custom-login', [CustomAuthController::class, 'customLogin'])->name('login.custom'); 
@@ -29,11 +33,21 @@ Route::group(['prefix' => 'admin'],function(){
     Route::resource('guest', AdminController::class)->except([
         'store'
     ]);
+    Route::resource('visitor', AdminVisitorController::class ,[
+        'as' => 'admin'
+    ]);
+    Route::get('visitor/keluar/{id}',[AdminVisitorController::class,'keluar'])->name('keluarvisitor');
+    Route::get('visitor/verifikasi/{id}',[AdminVisitorController::class,'verifikasi'])->name('verifikasivisitor');
     Route::resource('blokir', BlokirController::class);
     Route::get('/',[AdminController::class, 'index'])->name('admin.dashboard');
 });
 Route::get('pos/login', [PosCustomAuthController::class, 'index'])->name('poslogin');
 Route::group(['prefix' => 'pos'],function(){
+    Route::resource('visitor', PosVisitorController::class ,[
+        'as' => 'pos'
+    ]);
+    Route::get('visitor/keluar/{id}',[PosVisitorController::class,'keluar'])->name('poskeluarvisitor');
+    Route::get('visitor/verifikasi/{id}',[PosVisitorController::class,'verifikasi'])->name('posverifikasivisitor');
     Route::post('custom-login', [PosCustomAuthController::class, 'customLogin'])->name('poslogin.custom'); 
     Route::get('signout', [PosCustomAuthController::class, 'signOut'])->name('possignout');
     Route::get('/',[PosController::class, 'index'])->name('pos.dashboard');

@@ -27,10 +27,29 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header">
+                
                 <a href="{{ route('index') }}" class="btn btn-success"><span class="fas fa-plus"></span> tambah KIB</a>
+                
+                {{-- <a href="{{ route('index') }}" class="btn btn-success float-right"><span class="fas fa-plus"></span> tambah KIB</a> --}}
+
               </div>
+              
               <!-- /.card-header -->
               <div class="card-body">
+                <p><b>Tanggal terpilih : {{ $date }}</b></p>
+                <div class="row">
+                  <div class="col-12 col-sm-6 col-lg-4">
+                    <form action="{{route('guest.index')}}">
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Pilih Tanggal</label>
+                        <input type="date" name="date" value="{{ $date }}" class="form-control pilih-tanggal" id="exampleInputEmail1" placeholder="NIK">
+                      </div>
+                      <button type="submit" class="btn btn-primary">Pilih</button>
+                    </form>
+                  </div>
+                </div>
+                
+                <br>
                 <table id="example1" class="table table-bordered table-striped">
                   <thead>
                   <tr>
@@ -41,25 +60,32 @@
                         <th>Departemen</th>
                         <th>Jenis Pekerjaan</th>
                         <th>Jumlah Personil</th>
+                        <th>Status</th>
                         <th>Kelengkapan Fotokopi Berkas</th>
                         <th>Foto Lembar Depan Formulir</th>
                         <th>Nama Safety Officer</th>
                         <th>No HP</th>
-                        <th>Status</th>
                         <th>Aksi</th>
                   </tr>
                   </thead>
                   <tbody>
+                    <?php $jumlah = count($guests); ?>
                     @foreach ($guests as $item)
                         
                     <tr>
-                        <td>{{ $item->id }}</td>
+                        <td>{{ $jumlah-- }}</td>
                         <td>{{ $item->created_at }}</td>
                         <td>{{ $item->nama_badan_usaha }}</td>
                         <td>{{ $item->lokasi_pekerjaan }}</td>
                         <td>{{ $item->departemen }}</td>
                         <td>{{ $item->jenis_pekerjaan }}</td>
                         <td>{{ $item->jumlah_personil }}</td>
+                        @if($item->verifikasi != "Terverifikasi")
+                        <td><i class="fas fa-trasss" style="color:red;" ></i> {{ $item->verifikasi }}</td>
+                        @else
+                        <td><i class="fas fa-check" style="color:green;" ></i> {{ $item->verifikasi }}</td>
+
+                        @endif
                         <td>{{ $item->ktp }} {{ $item->kib }} {{ $item->surat_kesehatan }} {{ $item->lainnya }}</td>
                         <td>
                             <a href="{{ asset($item->foto_lembar_depan) }}" target="_blank">Lihat foto</a>
@@ -69,17 +95,12 @@
                         </td>
                         <td>{{ $item->nama_safety_upload }}</td>
                         <td>{{ $item->no_hp }}</td>
-                        @if($item->verifikasi != "Terverifikasi")
-                        <td><i class="fas fa-trasss" style="color:red;" ></i> {{ $item->verifikasi }}</td>
-                        @else
-                        <td><i class="fas fa-check" style="color:green;" ></i> {{ $item->verifikasi }}</td>
-
-                        @endif
                         
                         <td>
                             @if($item->verifikasi != "Terverifikasi")
-                            <a class="btn btn-primary" href="{{ route('verifikasikib',$item->id) }}"><span class="fas fa-check"></span></a>
+                            <a class="btn btn-success" href="{{ route('verifikasikib',$item->id) }}"><span class="fas fa-check"></span></a>
                             @endif
+                            <a class="btn btn-primary" href="{{ route('guest.edit',$item->id) }}"><span class="fas fa-edit"></span></a>
                             <button class="btn btn-danger" onclick="modaldelete({{ $item->id }})"><span class="fas fa-trash"></span></button>
                         </td>
                     </tr>
@@ -94,11 +115,11 @@
                         <th>Departemen</th>
                         <th>Jenis Pekerjaan</th>
                         <th>Jumlah Personil</th>
+                        <th>Status</th>
                         <th>Kelengkapan Fotokopi Berkas</th>
                         <th>Foto Lembar Depan Formulir</th>
                         <th>Nama Safety Officer</th>
                         <th>No HP</th>
-                        <th>Status</th>
                         <th>Aksi</th>
                     </tr>
                   </tfoot>
@@ -157,8 +178,10 @@
         })
     </script>
 @endif
+
     <!-- Page specific script -->
 <script>
+
     function modaldelete(id){
         // alert(id);
         var url = $('.delete-form').attr('action');
@@ -166,6 +189,10 @@
         $('#modal-default').modal('show');
     }
     $(function () {
+      //Date picker
+    $('#reservationdate').datetimepicker({
+        format: 'L'
+    });
       $(document).on('click', '[data-toggle="lightbox"]', function(event) {
         event.preventDefault();
         $(this).ekkoLightbox({

@@ -45,9 +45,10 @@
                   </tr>
                   </thead>
                   <tbody>
+                    <?php $jumlah = count($blokirs); ?>
                     @foreach ($blokirs as $item)     
                     <tr>
-                        <td>{{ $loop->index+1 }}</td>
+                        <td>{{ $jumlah-- }}</td>
                         <td>{{ $item->nama }}</td>
                         <td>{{ $item->nik }}</td>
                         <td>{{ $item->jenis_blokir }}</td>
