@@ -98,12 +98,12 @@
                         <td>-</td>
                         @endif
                         <td>
-                            {{-- @if($item->verifikasi != "Terverifikasi")
-                            <a class="btn btn-success" href="{{ route('verifikasivisitor',$item->id) }}"><span class="fas fa-check"></span></a>
+                            @if($item->verifikasi != "Terverifikasi")
+                            <a class="btn btn-success" href="{{ route('posverifikasivisitor',$item->id) }}"><span class="fas fa-check"></span></a>
                             @endif
                             @if($item->keluar == null)
-                            <a class="btn btn-secondary" href="{{ route('keluarvisitor',$item->id) }}"><span class="fas fa-sign-out-alt"></span></a>
-                            @endif --}}
+                            <a class="btn btn-secondary" href="{{ route('poskeluarvisitor',$item->id) }}"><span class="fas fa-sign-out-alt"></span></a>
+                            @endif
                             {{-- <a class="btn btn-primary" href="{{ route('pos.visitor.edit',$item->id) }}"><span class="fas fa-edit"></span></a> --}}
                             {{-- <button class="btn btn-danger" onclick="modaldelete({{ $item->id }})"><span class="fas fa-trash"></span></button> --}}
                         </td>
