@@ -6,15 +6,22 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Validator;
 use Session;
-
+use Auth;
 use App\Models\Guest;
 
 
 class AdminController extends Controller
 {
-    public function __construct()
+    protected $user;
+    public function __construct(Request $request)
     {
-            $this->middleware('auth');
+        // dd(Auth::user());
+        // $value = $request->session()->get('is_admin');
+        // dd($value);
+        // dd(session('is_admin'));
+        // $value = $request->session()->get('key');
+        // dd($this->user);
+            $this->middleware('auth',['tes' => 'egg']);
     }
     /**
      * Display a listing of the resource.
@@ -23,7 +30,7 @@ class AdminController extends Controller
      */
     public function index()
     {
-        $guests = Guest::get();
+        $guests = Guest::orderBy('id','DESC')->get();
         return view('admin.listguest',[
             'guests' => $guests
         ]);
@@ -76,6 +83,8 @@ class AdminController extends Controller
         ]);
     }
 
+    
+
     /**
      * Update the specified resource in storage.
      *
@@ -105,6 +114,19 @@ class AdminController extends Controller
             return redirect()->route("guest.index")->with('status', "Sukses mengedit guest");
         }else{
             return redirect()->route("guest.index")->with('danger', "Terjadi Kesalahan saat mengedit guest.");
+        }
+    }
+
+    public function verifikasi(Request $request, $id)
+    {
+        // dd('ok');
+        $guest = Guest::findOrFail($id);
+        $guest->verifikasi = "Terverifikasi";
+
+        if($guest->save()){
+            return redirect()->route("guest.index")->with('status', "Sukses memverfikasi KIB");
+        }else{
+            return redirect()->route("guest.index")->with('danger', "Terjadi Kesalahan saat memverfikasi KIB.");
         }
     }
 

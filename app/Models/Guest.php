@@ -24,5 +24,6 @@ class Guest extends Model
         'foto_lembar_depan',
         'nama_safety_upload',
         'no_hp',
+        'verifikasi'
     ];
 }

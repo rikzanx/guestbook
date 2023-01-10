@@ -19,6 +19,19 @@ class RedirectIfAuthenticated
      */
     public function handle(Request $request, Closure $next, ...$guards)
     {
+        dd($this->auth->guest());
+        if ($this->auth->guest())
+        {
+            if ($request->ajax())
+            {
+                return response('Unauthorized.', 401);
+            }
+            else
+            {
+                return redirect()->guest('auth/login');
+            }
+        }
+        
         $guards = empty($guards) ? [null] : $guards;
 
         foreach ($guards as $guard) {

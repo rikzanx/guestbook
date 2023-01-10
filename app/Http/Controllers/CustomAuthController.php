@@ -26,10 +26,15 @@ class CustomAuthController extends Controller
         ]);
         // dd('oke');
         $credentials = $request->only('email', 'password');
-        if (Auth::attempt($credentials)) {
-            // dd($credentials);
-            return redirect()->route('admin.dashboard')
-                        ->with('status', 'Signed in');
+        if($request->email){
+            // Auth::login($credentials);
+            if (Auth::attempt($credentials)) {
+                // session()->push('is_admin',true);
+                // session(['is_admin'=>true]);
+                // dd($credentials);
+                return redirect()->route('admin.dashboard')
+                            ->with('status', 'Signed in');
+            }
         }
         return redirect()->route("login")->with('danger','Login details are not valid');
     }

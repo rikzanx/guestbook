@@ -27,6 +27,7 @@ class CreateGuestsTable extends Migration
             $table->string("foto_lembar_depan");
             $table->string("nama_safety_upload");
             $table->string('no_hp');
+            $table->string('verifikasi')->default('belum terferivikasi');
             $table->timestamps();
         });
     }

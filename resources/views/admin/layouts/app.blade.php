@@ -3,7 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>{{ config('app.name', 'Laravel') }}</title>
+  <title>Admin {{ config('app.name', 'Laravel') }}</title>
 
   <!-- Google Font: Source Sans Pro -->
   <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700&display=fallback">
@@ -55,7 +55,7 @@
     <!-- Brand Logo -->
     <a href="{{ route('admin.dashboard') }}" class="brand-link">
       <img src="{{ asset('dist/img/AdminLTELogo.png') }}" alt="AdminLTE Logo" class="brand-image img-circle elevation-3" style="opacity: .8">
-      <span class="brand-text font-weight-light">AdminLTE 3</span>
+      <span class="brand-text font-weight-light">Admin KIB 24 Jam</span>
     </a>
     <!-- Sidebar -->
     <div class="sidebar">
@@ -66,12 +66,20 @@
             <a href="{{ route('admin.dashboard') }}" class="nav-link">
               <i class="nav-icon fas fa-th"></i>
               <p>
-                Dashboard
+                Daftar KIB 24Jam
+              </p>
+            </a>
+          </li>
+          <li class="nav-item">
+            <a href="{{ route('blokir.index') }}" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Daftar Terblokir
               </p>
             </a>
           </li>
           {{-- <li class="nav-item">
-            <a href="{{ route('perusahaan.index') }}" class="nav-link">
+            <a href="{{ route('blokir.index') }}" class="nav-link">
               <i class="nav-icon fas fa-building"></i>
               <p>
                 Profil Perusahaan

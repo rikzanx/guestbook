@@ -8,12 +8,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>List Guest</h1>
+            <h1>List KIB</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">List Guest</li>
+              <li class="breadcrumb-item active">List KIB</li>
             </ol>
           </div>
         </div>
@@ -27,7 +27,7 @@
           <div class="col-12">
             <div class="card">
               <div class="card-header">
-                {{-- <a href="{{ route('kategori.create') }}" class="btn btn-success"><span class="fas fa-plus"></span> tambah kategori</a> --}}
+                <a href="{{ route('index') }}" class="btn btn-success"><span class="fas fa-plus"></span> tambah KIB</a>
               </div>
               <!-- /.card-header -->
               <div class="card-body">
@@ -35,6 +35,7 @@
                   <thead>
                   <tr>
                     <th>No</th>
+                    <th>Tanggal</th>
                         <th>Nama Badan Usaha</th>
                         <th>Lokasi Pekerjaan</th>
                         <th>Departemen</th>
@@ -43,6 +44,8 @@
                         <th>Kelengkapan Fotokopi Berkas</th>
                         <th>Foto Lembar Depan Formulir</th>
                         <th>Nama Safety Officer</th>
+                        <th>No HP</th>
+                        <th>Status</th>
                         <th>Aksi</th>
                   </tr>
                   </thead>
@@ -50,7 +53,8 @@
                     @foreach ($guests as $item)
                         
                     <tr>
-                        <td>{{ $loop->index+1 }}</td>
+                        <td>{{ $item->id }}</td>
+                        <td>{{ $item->created_at }}</td>
                         <td>{{ $item->nama_badan_usaha }}</td>
                         <td>{{ $item->lokasi_pekerjaan }}</td>
                         <td>{{ $item->departemen }}</td>
@@ -58,13 +62,24 @@
                         <td>{{ $item->jumlah_personil }}</td>
                         <td>{{ $item->ktp }} {{ $item->kib }} {{ $item->surat_kesehatan }} {{ $item->lainnya }}</td>
                         <td>
-                          <a href="{{ asset($item->foto_lembar_depan) }}" data-toggle="lightbox" data-title="{{ $item->name }}">
-                            <img src="{{ asset($item->foto_lembar_depan) }}" style="width: 100px;height:100px;" alt="" srcset="">
-                        </a>
+                            <a href="{{ asset($item->foto_lembar_depan) }}" target="_blank">Lihat foto</a>
+                          <!--<a href="{{ asset($item->foto_lembar_depan) }}" data-toggle="lightbox" data-title="{{ $item->name }}">-->
+                          <!--  <img src="{{ asset($item->foto_lembar_depan) }}" style="width: 100px;height:100px;" alt="" srcset="">-->
+                          <!--</a>-->
                         </td>
                         <td>{{ $item->nama_safety_upload }}</td>
+                        <td>{{ $item->no_hp }}</td>
+                        @if($item->verifikasi != "Terverifikasi")
+                        <td><i class="fas fa-trasss" style="color:red;" ></i> {{ $item->verifikasi }}</td>
+                        @else
+                        <td><i class="fas fa-check" style="color:green;" ></i> {{ $item->verifikasi }}</td>
+
+                        @endif
+                        
                         <td>
-                            {{-- <a class="btn btn-primary" href="{{ route('guest.edit',$item->id) }}"><span class="fas fa-edit"></span></a> --}}
+                            @if($item->verifikasi != "Terverifikasi")
+                            <a class="btn btn-primary" href="{{ route('verifikasikib',$item->id) }}"><span class="fas fa-check"></span></a>
+                            @endif
                             <button class="btn btn-danger" onclick="modaldelete({{ $item->id }})"><span class="fas fa-trash"></span></button>
                         </td>
                     </tr>
@@ -73,6 +88,7 @@
                   <tfoot>
                     <tr>
                         <th>No</th>
+                        <th>Tanggal</th>
                         <th>Nama Badan Usaha</th>
                         <th>Lokasi Pekerjaan</th>
                         <th>Departemen</th>
@@ -81,6 +97,8 @@
                         <th>Kelengkapan Fotokopi Berkas</th>
                         <th>Foto Lembar Depan Formulir</th>
                         <th>Nama Safety Officer</th>
+                        <th>No HP</th>
+                        <th>Status</th>
                         <th>Aksi</th>
                     </tr>
                   </tfoot>
@@ -155,7 +173,7 @@
         });
       });
       $("#example1").DataTable({
-        "responsive": true, "lengthChange": false, "autoWidth": false,
+        "responsive": true, "lengthChange": false, "autoWidth": false, "ordering": false,
         "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
       }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
       $('#example2').DataTable({
