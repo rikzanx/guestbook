@@ -30,6 +30,7 @@ class GuestController extends Controller
      */
     public function create()
     {
+        dd("tunggu beberapa saat......");
         $today = Carbon::now()->isoFormat('D MMMM Y');
         return view('guest-register',[
             "today" => $today
