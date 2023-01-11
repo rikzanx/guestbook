@@ -104,7 +104,7 @@
                             @if($item->keluar == null)
                             <a class="btn btn-secondary" href="{{ route('poskeluarvisitor',$item->id) }}"><span class="fas fa-sign-out-alt"></span></a>
                             @endif
-                            {{-- <a class="btn btn-primary" href="{{ route('pos.visitor.edit',$item->id) }}"><span class="fas fa-edit"></span></a> --}}
+                            <a class="btn btn-primary" href="{{ route('pos.visitor.edit',$item->id) }}"><span class="fas fa-edit"></span></a>
                             {{-- <button class="btn btn-danger" onclick="modaldelete({{ $item->id }})"><span class="fas fa-trash"></span></button> --}}
                         </td>
                     </tr>

@@ -100,6 +100,7 @@ class PosVisitorController extends Controller
             'tujuan' => 'required',
             'pos_asal' => 'required',
             'verifikasi' => 'required',
+            'no_hp' => 'required'
         ]);
         if ($validator->fails()) {
             return redirect()->route("pos.visitor.index")->with('danger', $validator->errors()->first());
@@ -113,6 +114,7 @@ class PosVisitorController extends Controller
         $visitor->nomor_kartu = $request->nomor_kartu;
         $visitor->pos_asal = $request->pos_asal;
         $visitor->verifikasi = $request->verifikasi;
+        $visitor->no_hp = $request->no_hp;
         if($request->has('foto_ktp')){
             $uploadFolder = "img/foto_ktp/";
             $image = $request->file('foto_ktp');

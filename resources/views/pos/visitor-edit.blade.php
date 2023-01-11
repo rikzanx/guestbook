@@ -98,6 +98,10 @@
                     <input type="text" name="nomor_kartu" value="{{ $visitor->nomor_kartu }}" class="form-control" id="exampleInputEmail1" placeholder="Jawaban Anda">
                   </div>
                   <div class="form-group">
+                    <label for="exampleInputEmail1">Nomor HP</label>
+                    <input type="text" name="no_hp" value="{{ $visitor->no_hp }}" class="form-control" id="exampleInputEmail1" placeholder="Jawaban Anda">
+                  </div>
+                  <div class="form-group">
                     <label for="exampleInputEmail1">Jam Keluar</label>
                     <input type="time" name="keluar" value="{{ $visitor->keluar }}" class="form-control" id="exampleInputEmail1" placeholder="Jawaban Anda">
                   </div>
