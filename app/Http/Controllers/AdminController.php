@@ -38,6 +38,27 @@ class AdminController extends Controller
     }
 
     /**
+     * Display a listing of the resource.
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function all(Request $request)
+    {
+        // dd("aaa");
+        $date = Carbon::today();
+        $guests = Guest::orderBy('id','DESC')->get();
+        if($request->has("date")){
+            $date = Carbon::createFromFormat('Y-m-d',  $request->date); 
+            $guests = Guest::orderBy('id','DESC')->get();
+        }
+        
+        return view('admin.all-listguest',[
+            'guests' => $guests,
+            'date' => $date->format('Y-m-d')
+        ]);
+    }
+
+    /**
      * Show the form for creating a new resource.
      *
      * @return \Illuminate\Http\Response

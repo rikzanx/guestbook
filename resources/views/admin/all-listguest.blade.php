@@ -8,12 +8,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>List SIM B</h1>
+            <h1>List KIB</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">List SIM B</li>
+              <li class="breadcrumb-item active">List KIB</li>
             </ol>
           </div>
         </div>
@@ -28,7 +28,7 @@
             <div class="card">
               <div class="card-header">
                 
-                <a href="{{ route('simb.index') }}" class="btn btn-success"><span class="fas fa-plus"></span> Tambah SIM B</a>
+                <a href="{{ route('index') }}" class="btn btn-success"><span class="fas fa-plus"></span> tambah KIB</a>
                 
                 {{-- <a href="{{ route('index') }}" class="btn btn-success float-right"><span class="fas fa-plus"></span> tambah KIB</a> --}}
 
@@ -39,7 +39,7 @@
                 <p><b>Tanggal terpilih : {{ $date }}</b></p>
                 <div class="row">
                   <div class="col-12 col-sm-6 col-lg-4">
-                    <form action="{{route('admin.simb.index')}}">
+                    <form action="{{route('guest.index')}}">
                       <div class="form-group">
                         <label for="exampleInputEmail1">Pilih Tanggal</label>
                         <input type="date" name="date" value="{{ $date }}" class="form-control pilih-tanggal" id="exampleInputEmail1" placeholder="NIK">
@@ -54,50 +54,53 @@
                   <thead>
                   <tr>
                     <th>No</th>
-                    <th>Nomor Surat</th>
-                    <th>Nama</th>
-                    <th>NIK</th>
-                    <th>Bag / Dep / Ro</th>
-                    <th>Dari</th>
-                    <th>Tujuan</th>
-                    <th>No.MB/No.SPBK/No.POL</th>
-                    <th>Barang dibawa</th>
-                    <th>Foto SIMB</th>
-                    <th>Izin POS</th>
-                    <th>Status</th>
                     <th>Tanggal</th>
-                    <th>Aksi</th>
+                        <th>Nama Badan Usaha</th>
+                        <th>Lokasi Pekerjaan</th>
+                        <th>Departemen</th>
+                        <th>Jenis Pekerjaan</th>
+                        <th>Jumlah Personil</th>
+                        <th>Status</th>
+                        <th>Kelengkapan Fotokopi Berkas</th>
+                        <th>Foto Lembar Depan Formulir</th>
+                        <th>Nama Safety Officer</th>
+                        <th>No HP</th>
+                        <th>Aksi</th>
                   </tr>
                   </thead>
                   <tbody>
-                    <?php $jumlah = count($simbs); ?>
-                    @foreach ($simbs as $item)
+                    <?php $jumlah = count($guests); ?>
+                    @foreach ($guests as $item)
                         
                     <tr>
                         <td>{{ $jumlah-- }}</td>
-                        <td>{{ $item->nomor_surat }}</td>
-                        <td>{{ $item->nama }}</td>
-                        <td>{{ $item->nik }}</td>
+                        <td>{{ $item->created_at }}</td>
+                        <td>{{ $item->nama_badan_usaha }}</td>
+                        <td>{{ $item->lokasi_pekerjaan }}</td>
                         <td>{{ $item->departemen }}</td>
-                        <td>{{ $item->dari }}</td>
-                        <td>{{ $item->tujuan }}</td>
-                        <td>{{ $item->no_mb }}</td>
-                        <td>{{ $item->barang }}</td>
-                        <td>
-                          <a href="{{ asset($item->foto_simb) }}" target="_blank">Lihat foto</a>
-                        </td>
-                        <td>{{ ($item->pos_izin == 'lainnya') ? $item->pos_izin." (".$item->lainnya.")":$item->pos_izin }}</td>
+                        <td>{{ $item->jenis_pekerjaan }}</td>
+                        <td>{{ $item->jumlah_personil }}</td>
                         @if($item->verifikasi != "Terverifikasi")
                         <td><i class="fas fa-trasss" style="color:red;" ></i> {{ $item->verifikasi }}</td>
                         @else
                         <td><i class="fas fa-check" style="color:green;" ></i> {{ $item->verifikasi }}</td>
+
                         @endif
-                        <td>{{ $item->created_at }}</td>
+                        <td>{{ $item->ktp }} {{ $item->kib }} {{ $item->surat_kesehatan }} {{ $item->lainnya }}</td>
+                        <td>
+                            <a href="{{ asset($item->foto_lembar_depan) }}" target="_blank">Lihat foto</a>
+                          <!--<a href="{{ asset($item->foto_lembar_depan) }}" data-toggle="lightbox" data-title="{{ $item->name }}">-->
+                          <!--  <img src="{{ asset($item->foto_lembar_depan) }}" style="width: 100px;height:100px;" alt="" srcset="">-->
+                          <!--</a>-->
+                        </td>
+                        <td>{{ $item->nama_safety_upload }}</td>
+                        <td>{{ $item->no_hp }}</td>
+                        
                         <td>
                             @if($item->verifikasi != "Terverifikasi")
-                            <a class="btn btn-success" href="{{ route('verifikasisimb',$item->id) }}"><span class="fas fa-check"></span></a>
+                            <a class="btn btn-success" href="{{ route('verifikasikib',$item->id) }}"><span class="fas fa-check"></span></a>
                             @endif
-                            <a class="btn btn-primary" href="{{ route('admin.simb.edit',$item->id) }}"><span class="fas fa-edit"></span></a>
+                            <a class="btn btn-primary" href="{{ route('guest.edit',$item->id) }}"><span class="fas fa-edit"></span></a>
                             <button class="btn btn-danger" onclick="modaldelete({{ $item->id }})"><span class="fas fa-trash"></span></button>
                         </td>
                     </tr>
@@ -105,20 +108,19 @@
                   </tbody>
                   <tfoot>
                     <tr>
-                      <th>No</th>
-                      <th>Nomor Surat</th>
-                      <th>Nama</th>
-                      <th>NIK</th>
-                      <th>Bag / Dep / Ro</th>
-                      <th>Dari</th>
-                      <th>Tujuan</th>
-                      <th>No.MB/No.SPBK/No.POL</th>
-                      <th>Barang dibawa</th>
-                      <th>Foto SIMB</th>
-                      <th>Izin POS</th>
-                      <th>Status</th>
-                      <th>Tanggal</th>
-                      <th>Aksi</th>
+                        <th>No</th>
+                        <th>Tanggal</th>
+                        <th>Nama Badan Usaha</th>
+                        <th>Lokasi Pekerjaan</th>
+                        <th>Departemen</th>
+                        <th>Jenis Pekerjaan</th>
+                        <th>Jumlah Personil</th>
+                        <th>Status</th>
+                        <th>Kelengkapan Fotokopi Berkas</th>
+                        <th>Foto Lembar Depan Formulir</th>
+                        <th>Nama Safety Officer</th>
+                        <th>No HP</th>
+                        <th>Aksi</th>
                     </tr>
                   </tfoot>
                 </table>
@@ -149,7 +151,7 @@
         <div class="modal-body">
           <p>Apakah anda yakin akan menghapus data ini&hellip;</p>
         </div>
-        <form action="{{ route('admin.simb.destroy', ':id') }}" method="POST" class="delete-form">
+        <form action="{{ route('guest.destroy', ':id') }}" method="POST" class="delete-form">
             @csrf
             @method('DELETE')
             <div class="modal-footer justify-content-between">

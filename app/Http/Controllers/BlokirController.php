@@ -28,6 +28,14 @@ class BlokirController extends Controller
         ]);
     }
 
+    public function all()
+    {
+        $blokirs = Blokir::get();
+        return view('admin.all-listblokir',[
+            'blokirs' => $blokirs
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

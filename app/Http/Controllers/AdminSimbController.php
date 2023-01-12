@@ -37,6 +37,21 @@ class AdminSimbController extends Controller
         ]);
     }
 
+    public function all(Request $request )
+    {
+        $date = Carbon::today();
+        $simbs = Simb::orderBy('id','DESC')->get();
+        if($request->has("date")){
+            $date = Carbon::createFromFormat('Y-m-d',  $request->date); 
+            $simbs = Simb::orderBy('id','DESC')->get();
+        }
+        
+        return view('admin.all-listsimb',[
+            'simbs' => $simbs,
+            'date' => $date->format('Y-m-d')
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

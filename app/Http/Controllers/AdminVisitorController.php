@@ -37,6 +37,21 @@ class AdminVisitorController extends Controller
         ]);
     }
 
+    public function all(Request $request )
+    {
+        $date = Carbon::today();
+        $visitors = Visitor::orderBy('id','DESC')->get();
+        if($request->has("date")){
+            $date = Carbon::createFromFormat('Y-m-d',  $request->date); 
+            $visitors = Visitor::orderBy('id','DESC')->get();
+        }
+        
+        return view('admin.all-listvisitor',[
+            'visitors' => $visitors,
+            'date' => $date->format('Y-m-d')
+        ]);
+    }
+
     /**
      * Show the form for creating a new resource.
      *

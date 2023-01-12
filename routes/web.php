@@ -32,8 +32,10 @@ Route::resource('visitor',VisitorController::class);
 Route::resource('simb',SimbController::class);
 Route::get('guest/verifikasi/{id}',[AdminController::class,'verifikasi'])->name('verifikasikib');
 Route::group(['prefix' => 'admin'],function(){
+
     Route::post('custom-login', [CustomAuthController::class, 'customLogin'])->name('login.custom'); 
     Route::get('signout', [CustomAuthController::class, 'signOut'])->name('signout');
+
     Route::resource('guest', AdminController::class)->except([
         'store'
     ]);
@@ -48,6 +50,11 @@ Route::group(['prefix' => 'admin'],function(){
     Route::get('simb/verifikasi/{id}',[AdminSimbController::class,'verifikasi'])->name('verifikasisimb');
     Route::resource('blokir', BlokirController::class);
     Route::get('/',[AdminController::class, 'index'])->name('admin.dashboard');
+
+    Route::get('all/guest',[AdminController::class,'all'])->name('guest.all');
+    Route::get('all/visitor',[AdminVisitorController::class,'all'])->name('visitor.all');
+    Route::get('all/simb',[AdminSimbController::class,'all'])->name('simb.all');
+    Route::get('all/blokir',[BlokirController::class,'all'])->name('blokir.all');
 });
 Route::get('pos/login', [PosCustomAuthController::class, 'index'])->name('poslogin');
 Route::group(['prefix' => 'pos'],function(){
