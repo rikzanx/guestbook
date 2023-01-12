@@ -122,6 +122,9 @@ class AdminVisitorController extends Controller
             $image->move(public_path($uploadFolder), $imageName);
             $visitor->foto_ktp = $uploadFolder.$imageName;
         }
+        if($request->has('lainnya')){
+            $visitor->lainnya = $request->lainnya;
+        }
         if($request->has('keluar')){
             $visitor->keluar = $request->keluar;
         }

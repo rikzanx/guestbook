@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('pos.layouts.app')
 
 @section('content')
 <!-- Content Wrapper. Contains page content -->
@@ -32,7 +32,7 @@
               </div>
               <!-- /.card-header -->
               <!-- form start -->
-              <form method="POST" action="{{ route('admin.simb.update',$simb->id) }}" enctype="multipart/form-data">
+              <form method="POST" action="{{ route('pos.simb.update',$simb->id) }}" enctype="multipart/form-data">
                 @csrf
                 {{ method_field('PATCH') }}
                 <div class="card-body">

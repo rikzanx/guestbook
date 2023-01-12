@@ -1,4 +1,4 @@
-@extends('admin.layouts.app')
+@extends('pos.layouts.app')
 
 @section('content')
     <!-- Content Wrapper. Contains page content -->
@@ -39,7 +39,7 @@
                 <p><b>Tanggal terpilih : {{ $date }}</b></p>
                 <div class="row">
                   <div class="col-12 col-sm-6 col-lg-4">
-                    <form action="{{route('admin.simb.index')}}">
+                    <form action="{{route('pos.simb.index')}}">
                       <div class="form-group">
                         <label for="exampleInputEmail1">Pilih Tanggal</label>
                         <input type="date" name="date" value="{{ $date }}" class="form-control pilih-tanggal" id="exampleInputEmail1" placeholder="NIK">
@@ -95,9 +95,9 @@
                         <td>{{ $item->created_at }}</td>
                         <td>
                             @if($item->verifikasi != "Terverifikasi")
-                            <a class="btn btn-success" href="{{ route('adminverifikasisimb',$item->id) }}"><span class="fas fa-check"></span></a>
+                            <a class="btn btn-success" href="{{ route('verifikasisimb',$item->id) }}"><span class="fas fa-check"></span></a>
                             @endif
-                            <a class="btn btn-primary" href="{{ route('admin.simb.edit',$item->id) }}"><span class="fas fa-edit"></span></a>
+                            <a class="btn btn-primary" href="{{ route('pos.simb.edit',$item->id) }}"><span class="fas fa-edit"></span></a>
                             <button class="btn btn-danger" onclick="modaldelete({{ $item->id }})"><span class="fas fa-trash"></span></button>
                         </td>
                     </tr>
@@ -149,7 +149,7 @@
         <div class="modal-body">
           <p>Apakah anda yakin akan menghapus data ini&hellip;</p>
         </div>
-        <form action="{{ route('admin.simb.destroy', ':id') }}" method="POST" class="delete-form">
+        <form action="{{ route('pos.simb.destroy', ':id') }}" method="POST" class="delete-form">
             @csrf
             @method('DELETE')
             <div class="modal-footer justify-content-between">

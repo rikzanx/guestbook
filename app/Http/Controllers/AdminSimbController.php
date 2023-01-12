@@ -96,11 +96,14 @@ class AdminSimbController extends Controller
         $validator = Validator::make($request->all(), [
             'nama' => 'required',
             'nik' => 'required',
-            'nama_perusahaan' => 'required',
+            'nomor_surat' => 'required',
+            'departemen' => 'required',
+            'dari' => 'required',
             'tujuan' => 'required',
-            'pos_asal' => 'required',
+            'no_mb' => 'required',
+            'barang' => 'required',
+            'pos_izin' => 'required',
             'verifikasi' => 'required',
-            'no_hp' => 'required',
         ]);
         if ($validator->fails()) {
             return redirect()->route("admin.simb.index")->with('danger', $validator->errors()->first());
@@ -109,21 +112,23 @@ class AdminSimbController extends Controller
         $simb = Simb::findOrFail($id);
         $simb->nama = $request->nama;
         $simb->nik = $request->nik;
-        $simb->nama_perusahaan = $request->nama_perusahaan;
+        $simb->nomor_surat = $request->nomor_surat;
+        $simb->departemen = $request->departemen;
+        $simb->dari = $request->dari;
         $simb->tujuan = $request->tujuan;
-        $simb->nomor_kartu = $request->nomor_kartu;
-        $simb->pos_asal = $request->pos_asal;
+        $simb->no_mb = $request->no_mb;
+        $simb->barang = $request->barang;
+        $simb->pos_izin = $request->pos_izin;
         $simb->verifikasi = $request->verifikasi;
-        $simb->no_hp = $request->no_hp;
-        if($request->has('foto_ktp')){
-            $uploadFolder = "img/foto_ktp/";
-            $image = $request->file('foto_ktp');
+        if($request->has('foto_simb')){
+            $uploadFolder = "img/foto_simb/";
+            $image = $request->file('foto_simb');
             $imageName = time().'-'.$image->getClientOriginalName();
             $image->move(public_path($uploadFolder), $imageName);
-            $simb->foto_ktp = $uploadFolder.$imageName;
+            $simb->foto_simb = $uploadFolder.$imageName;
         }
-        if($request->has('keluar')){
-            $simb->keluar = $request->keluar;
+        if($request->has('lainnya')){
+            $simb->lainnya = $request->lainnya;
         }
         if($simb->save()){
             return redirect()->route("admin.simb.index")->with('status', "Sukses mengedit simb");

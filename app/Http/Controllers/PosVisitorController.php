@@ -125,6 +125,9 @@ class PosVisitorController extends Controller
         if($request->has('keluar')){
             $visitor->keluar = $request->keluar;
         }
+        if($request->has('lainnya')){
+            $visitor->lainnya = $request->lainnya;
+        }
         if($visitor->save()){
             return redirect()->route("pos.visitor.index")->with('status', "Sukses mengedit visitor");
         }else{

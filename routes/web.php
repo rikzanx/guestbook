@@ -56,6 +56,12 @@ Route::group(['prefix' => 'pos'],function(){
     ]);
     Route::get('visitor/keluar/{id}',[PosVisitorController::class,'keluar'])->name('poskeluarvisitor');
     Route::get('visitor/verifikasi/{id}',[PosVisitorController::class,'verifikasi'])->name('posverifikasivisitor');
+
+    Route::resource('simb', PosSimbController::class ,[
+        'as' => 'pos'
+    ]);
+    Route::get('simb/verifikasi/{id}',[PosSimbController::class,'verifikasi'])->name('posverifikasisimb');
+
     Route::post('custom-login', [PosCustomAuthController::class, 'customLogin'])->name('poslogin.custom'); 
     Route::get('signout', [PosCustomAuthController::class, 'signOut'])->name('possignout');
     Route::get('/',[PosController::class, 'index'])->name('pos.dashboard');
