@@ -45,8 +45,29 @@
                     <input type="text" name="nik" value="{{ $simb->nik }}" class="form-control" id="exampleInputEmail1" placeholder="Jawaban Anda">
                   </div>
                   <div class="form-group">
-                    <label for="exampleInputEmail1">Nama Perusahaan</label>
-                    <input type="text" name="nama_perusahaan" value="{{ $simb->nama_perusahaan }}" class="form-control" id="exampleInputEmail1" placeholder="Jawaban Anda">
+                    <label for="exampleInputEmail1">Nomor Surat SIM B</label>
+                    <input type="text" name="nomor_surat" value="{{ $simb->nomor_surat }}" class="form-control" id="exampleInputEmail1" placeholder="Jawaban Anda">
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Bag / Dep / Ro</label>
+                    <input type="text" name="departemen" value="{{ $simb->departemen }}" class="form-control" id="exampleInputEmail1" placeholder="Jawaban Anda">
+                  </div>
+                  <p>Untuk membawa barang</p>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Dari</label>
+                    <input type="text" name="dari" value="{{ $simb->dari }}" class="form-control" id="exampleInputEmail1" placeholder="Jawaban Anda">
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Tujuan</label>
+                    <input type="text" name="tujuan" value="{{ $simb->tujuan }}" class="form-control" id="exampleInputEmail1" placeholder="Jawaban Anda">
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">No. MB / No SPBK / No POL Kendaraan</label>
+                    <input type="text" name="no_mb" value="{{ $simb->no_mb }}" class="form-control" id="exampleInputEmail1" placeholder="Jawaban Anda">
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">Barang yang dibawa</label>
+                    <input type="text" name="no_mb" value="{{ $simb->no_mb }}" class="form-control" id="exampleInputEmail1" placeholder="Jawaban Anda">
                   </div>
                   <div class="form-group">
                     <label for="exampleInputEmail1">POS Asal</label>

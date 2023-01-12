@@ -30,6 +30,15 @@
 
       <form method="POST" action="{{ route('simb.store') }}" enctype="multipart/form-data">
         @csrf
+        <p>Nomor Surat / No Berkas</p>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" name="nomor_surat" placeholder="Jawaban Anda">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-userss"></span>
+            </div>
+          </div>
+        </div>
         <p>Nama</p>
         <div class="input-group mb-3">
           <input type="text" class="form-control" name="nama" placeholder="Jawaban Anda">
@@ -48,15 +57,7 @@
             </div>
           </div>
         </div>
-        <p>Nomor Surat SIM B</p>
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" name="nomor_surat" placeholder="Jawaban Anda">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-userss"></span>
-            </div>
-          </div>
-        </div>
+      
         <p>Bag / Dep / Ro</p>
         <div class="input-group mb-3">
           <input type="text" class="form-control" name="departemen" placeholder="Jawaban Anda">
