@@ -90,6 +90,14 @@
               </p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="{{ route('admin.simb.index') }}" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Daftar SIM B
+              </p>
+            </a>
+          </li>
           {{-- <li class="nav-item">
             <a href="{{ route('blokir.index') }}" class="nav-link">
               <i class="nav-icon fas fa-building"></i>
