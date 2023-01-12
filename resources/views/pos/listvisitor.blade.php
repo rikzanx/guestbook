@@ -78,7 +78,7 @@
                         <td>{{ $item->nama }}</td>
                         <td>{{ $item->nik }}</td>
                         <td>{{ $item->nama_perusahaan }}</td>
-                        <td>{{ $item->pos_asal }}</td>
+                        <td>{{ ($item->pos_asal == 'lainnya') ? $item->pos_asal." (".$item->lainnya.")":$item->pos_asal }}</td>
                         <td>{{ $item->tujuan }}</td>
                         <td>
                           <a href="{{ asset($item->foto_ktp) }}" target="_blank">Lihat foto</a>

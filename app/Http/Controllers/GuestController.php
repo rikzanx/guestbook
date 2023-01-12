@@ -81,9 +81,9 @@ class GuestController extends Controller
         ]);
 
         if($guest){
-            return redirect()->route("index")->with('status', "Sukses menambahkan kategori");
+            return redirect()->route("index")->with('status', "Sukses menambahkan KIB");
         }else{
-            return redirect()->route("index")->with('danger', "Terjadi Kesalahan saat menambahkan kategori.");
+            return redirect()->route("index")->with('danger', "Terjadi Kesalahan saat menambahkan KIB.");
         }
     }
 

@@ -8,12 +8,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>List Visitor</h1>
+            <h1>List SIM B</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">List Visitor</li>
+              <li class="breadcrumb-item active">List SIM B</li>
             </ol>
           </div>
         </div>
@@ -28,7 +28,7 @@
             <div class="card">
               <div class="card-header">
                 
-                <a href="{{ route('visitor.index') }}" class="btn btn-success"><span class="fas fa-plus"></span> Tambah Visitor</a>
+                <a href="{{ route('simb.index') }}" class="btn btn-success"><span class="fas fa-plus"></span> Tambah SIM B</a>
                 
                 {{-- <a href="{{ route('index') }}" class="btn btn-success float-right"><span class="fas fa-plus"></span> tambah KIB</a> --}}
 
@@ -39,7 +39,7 @@
                 <p><b>Tanggal terpilih : {{ $date }}</b></p>
                 <div class="row">
                   <div class="col-12 col-sm-6 col-lg-4">
-                    <form action="{{route('admin.visitor.index')}}">
+                    <form action="{{route('admin.simb.index')}}">
                       <div class="form-group">
                         <label for="exampleInputEmail1">Pilih Tanggal</label>
                         <input type="date" name="date" value="{{ $date }}" class="form-control pilih-tanggal" id="exampleInputEmail1" placeholder="NIK">
@@ -56,55 +56,48 @@
                     <th>No</th>
                     <th>Nama</th>
                     <th>NIK</th>
-                    <th>Perusahaan / Instansi</th>
-                    <th>Pos Asal</th>
+                    <th>Nomor Surat</th>
+                    <th>Bag / Dep / Ro</th>
+                    <th>Dari</th>
                     <th>Tujuan</th>
-                    <th>Foto KTP</th>
-                    <th>No HP</th>
-                    <th>Nomor Kartu</th>
+                    <th>No.MB/No.SPBK/No.POL</th>
+                    <th>Barang dibawa</th>
+                    <th>Foto SIMB</th>
+                    <th>Izin POS</th>
                     <th>Status</th>
                     <th>Tanggal</th>
-                    <th>Jam Masuk</th>
-                    <th>Jam Keluar</th>
                     <th>Aksi</th>
                   </tr>
                   </thead>
                   <tbody>
-                    <?php $jumlah = count($visitors); ?>
-                    @foreach ($visitors as $item)
+                    <?php $jumlah = count($simbs); ?>
+                    @foreach ($simbs as $item)
                         
                     <tr>
                         <td>{{ $jumlah-- }}</td>
                         <td>{{ $item->nama }}</td>
                         <td>{{ $item->nik }}</td>
-                        <td>{{ $item->nama_perusahaan }}</td>
-                        <td>{{ ($item->pos_asal == 'lainnya') ? $item->pos_asal." (".$item->lainnya.")":$item->pos_asal }}</td>
+                        <td>{{ $item->nomor_surat }}</td>
+                        <td>{{ $item->departemen }}</td>
+                        <td>{{ $item->dari }}</td>
                         <td>{{ $item->tujuan }}</td>
+                        <td>{{ $item->no_mb }}</td>
+                        <td>{{ $item->barang }}</td>
                         <td>
-                          <a href="{{ asset($item->foto_ktp) }}" target="_blank">Lihat foto</a>
+                          <a href="{{ asset($item->foto_simb) }}" target="_blank">Lihat foto</a>
                         </td>
-                        <td>{{ $item->no_hp }}</td>
-                        <td>{{ $item->nomor_kartu }}</td>
+                        <td>{{ ($item->pos_izin == 'lainnya') ? $item->pos_izin." (".$item->lainnya.")":$item->pos_izin }}</td>
                         @if($item->verifikasi != "Terverifikasi")
                         <td><i class="fas fa-trasss" style="color:red;" ></i> {{ $item->verifikasi }}</td>
                         @else
                         <td><i class="fas fa-check" style="color:green;" ></i> {{ $item->verifikasi }}</td>
                         @endif
                         <td>{{ $item->created_at }}</td>
-                        <td>{{ \Carbon\Carbon::parse($item->created_at)->format('h:i') }}</td>
-                        @if($item->keluar != null)
-                        <td>{{ \Carbon\Carbon::parse($item->keluar)->format('h:i') }}</td>
-                        @else
-                        <td>-</td>
-                        @endif
                         <td>
                             @if($item->verifikasi != "Terverifikasi")
-                            <a class="btn btn-success" href="{{ route('verifikasivisitor',$item->id) }}"><span class="fas fa-check"></span></a>
+                            <a class="btn btn-success" href="{{ route('verifikasisimb',$item->id) }}"><span class="fas fa-check"></span></a>
                             @endif
-                            @if($item->keluar == null)
-                            <a class="btn btn-secondary" href="{{ route('keluarvisitor',$item->id) }}"><span class="fas fa-sign-out-alt"></span></a>
-                            @endif
-                            <a class="btn btn-primary" href="{{ route('admin.visitor.edit',$item->id) }}"><span class="fas fa-edit"></span></a>
+                            <a class="btn btn-primary" href="{{ route('admin.simb.edit',$item->id) }}"><span class="fas fa-edit"></span></a>
                             <button class="btn btn-danger" onclick="modaldelete({{ $item->id }})"><span class="fas fa-trash"></span></button>
                         </td>
                     </tr>
@@ -115,16 +108,16 @@
                       <th>No</th>
                       <th>Nama</th>
                       <th>NIK</th>
-                      <th>Perusahaan / Instansi</th>
-                      <th>Pos Asal</th>
+                      <th>Nomor Surat</th>
+                      <th>Bag / Dep / Ro</th>
+                      <th>Dari</th>
                       <th>Tujuan</th>
-                      <th>Foto KTP</th>
-                      <th>No HP</th>
-                      <th>Nomor Kartu</th>
+                      <th>No.MB/No.SPBK/No.POL</th>
+                      <th>Barang dibawa</th>
+                      <th>Foto SIMB</th>
+                      <th>Izin POS</th>
                       <th>Status</th>
                       <th>Tanggal</th>
-                      <th>Jam Masuk</th>
-                      <th>Jam Keluar</th>
                       <th>Aksi</th>
                     </tr>
                   </tfoot>
@@ -156,7 +149,7 @@
         <div class="modal-body">
           <p>Apakah anda yakin akan menghapus data ini&hellip;</p>
         </div>
-        <form action="{{ route('admin.visitor.destroy', ':id') }}" method="POST" class="delete-form">
+        <form action="{{ route('admin.simb.destroy', ':id') }}" method="POST" class="delete-form">
             @csrf
             @method('DELETE')
             <div class="modal-footer justify-content-between">

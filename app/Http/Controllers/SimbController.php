@@ -7,9 +7,9 @@ use Carbon\Carbon;
 use Validator;
 use Session;
 
-use App\Models\Visitor;
+use App\Models\Simb;
 
-class VisitorController extends Controller
+class SimbController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -19,7 +19,7 @@ class VisitorController extends Controller
     public function index()
     {
         $today = Carbon::now()->isoFormat('D MMMM Y');
-        return view('visitor-register',[
+        return view('simb-register',[
             "today" => $today
         ]);
     }
@@ -45,39 +45,44 @@ class VisitorController extends Controller
         $validator = Validator::make($request->all(), [
             'nama' => 'required',
             'nik' => 'required',
-            'nama_perusahaan' => 'required',
+            'nomor_surat' => 'required',
+            'departemen' => 'required',
+            'dari' => 'required',
             'tujuan' => 'required',
-            'foto_ktp' => 'required',
-            'pos_asal' => 'required',
-            'no_hp' => 'required',
+            'no_mb' => 'required',
+            'barang' => 'required',
+            'foto_simb' => 'required',
+            'pos_izin' => 'required',
         ]);
         if ($validator->fails()) {
             // dd($validator->errors());
-            return redirect()->route("visitor.index")->with('danger', $validator->errors()->first());
+            return redirect()->route("simb.index")->with('danger', $validator->errors()->first());
         }
         // dd($request->all());
-        $uploadFolder = "img/foto_ktp/";
-        $image = $request->file('foto_ktp');
+        $uploadFolder = "img/foto_simb/";
+        $image = $request->file('foto_simb');
         $imageName = time().'-'.$image->getClientOriginalName();
         $image->move(public_path($uploadFolder), $imageName);
         $image_link = $uploadFolder.$imageName;
 
-        $visitor = Visitor::create([
+        $simb = Simb::create([
             'nama' => $request->nama,
             'nik' => $request->nik,
-            'nama_perusahaan' => $request->nama_perusahaan,
+            'nomor_surat' => $request->nomor_surat,
+            'departemen' => $request->departemen,
+            'dari' => $request->dari,
             'tujuan' => $request->tujuan,
-            'foto_ktp' => $image_link,
-            'nomor_kartu' => $request->nomor_kartu,
-            'pos_asal' => $request->pos_asal,
+            'no_mb' => $request->no_mb,
+            'barang' => $request->barang,
+            'foto_simb' => $image_link,
+            'pos_izin' => $request->pos_izin,
             'lainnya' => ($request->has('lainnya')) ? $request->lainnya : null,
-            'no_hp' => $request->no_hp
         ]);
 
-        if($visitor){
-            return redirect()->route("visitor.index")->with('status', "Sukses menambahkan KIB");
+        if($simb){
+            return redirect()->route("simb.index")->with('status', "Sukses menambahkan SIM B");
         }else{
-            return redirect()->route("visitor.index")->with('danger', "Terjadi Kesalahan saat menambahkan KIB.");
+            return redirect()->route("simb.index")->with('danger', "Terjadi Kesalahan saat menambahkan SIM B.");
         }
     }
 

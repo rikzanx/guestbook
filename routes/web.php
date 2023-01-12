@@ -10,6 +10,9 @@ use App\Http\Controllers\PosController;
 use App\Http\Controllers\VisitorController;
 use App\Http\Controllers\AdminVisitorController;
 use App\Http\Controllers\PosVisitorController;
+use App\Http\Controllers\SimbController;
+use App\Http\Controllers\AdminSimbController;
+use App\Http\Controllers\PosSimbController;
 
 /*
 |--------------------------------------------------------------------------
@@ -26,6 +29,7 @@ Route::get('/', [GuestController::class, 'create'])->name('index');
 Route::get('admin/login', [CustomAuthController::class, 'index'])->name('login');
 Route::post('guest/store', [GuestController::class,'store'])->name('gueststore');  
 Route::resource('visitor',VisitorController::class);
+Route::resource('simb',SimbController::class);
 Route::get('guest/verifikasi/{id}',[AdminController::class,'verifikasi'])->name('verifikasikib');
 Route::group(['prefix' => 'admin'],function(){
     Route::post('custom-login', [CustomAuthController::class, 'customLogin'])->name('login.custom'); 
@@ -38,6 +42,10 @@ Route::group(['prefix' => 'admin'],function(){
     ]);
     Route::get('visitor/keluar/{id}',[AdminVisitorController::class,'keluar'])->name('keluarvisitor');
     Route::get('visitor/verifikasi/{id}',[AdminVisitorController::class,'verifikasi'])->name('verifikasivisitor');
+    Route::resource('simb', AdminSimbController::class ,[
+        'as' => 'admin'
+    ]);
+    Route::get('simb/verifikasi/{id}',[AdminSimbController::class,'verifikasi'])->name('verifikasisimb');
     Route::resource('blokir', BlokirController::class);
     Route::get('/',[AdminController::class, 'index'])->name('admin.dashboard');
 });
