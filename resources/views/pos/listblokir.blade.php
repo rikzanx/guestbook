@@ -52,9 +52,11 @@
                         <td>{{ $item->nik }}</td>
                         <td>{{ $item->jenis_blokir }}</td>
                         <td>
-                          <a href="{{ asset($item->foto) }}" target="_blank">Lihat foto</a>
-                        <td>{{ $item->keterangan }}</td>
+                          <a href="{{ asset($item->foto) }}" data-toggle="lightbox" data-title="{{ $item->name }}">
+                            <img src="{{ asset($item->foto) }}" style="width: 100px;height:100px;" alt="" srcset="">
+                        </a>
                         </td>
+                        <td>{{ $item->keterangan }}</td>
                         <td>{{ $item->masa_berlaku }}</td>
                         <!-- @if($item->verifikasi != "Terverifikasi")
                         <td><i class="fas fa-trasss" style="color:red;" ></i> {{ $item->verifikasi }}</td>

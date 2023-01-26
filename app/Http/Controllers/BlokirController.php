@@ -8,6 +8,8 @@ use Validator;
 use Session;
 
 use App\Models\Blokir;
+use App\Models\ImagesBlokir;
+use Illuminate\Support\Facades\DB;
 
 class BlokirController extends Controller
 {
@@ -21,7 +23,9 @@ class BlokirController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function index()
-    {
+    {   
+        
+
         $blokirs = Blokir::get();
         return view('admin.listblokir',[
             'blokirs' => $blokirs
@@ -30,6 +34,28 @@ class BlokirController extends Controller
 
     public function all()
     {
+        $jumlah = 0;
+        DB::beginTransaction();
+        try {
+            $blokirs = Blokir::get();
+            foreach($blokirs as $item){
+                $image = ImagesBlokir::where('blokir_id',$item->id)->get();
+                if(count($image) <= 0){
+                    $imagesblokir = new ImagesBlokir();
+                    $imagesblokir->blokir_id = $item->id;
+                    $imagesblokir->foto_blokir = $item->foto;
+                    $imagesblokir->save();
+                    $jumlah++;
+                }
+            }
+            DB::commit();
+            return "oke: ".$jumlah;
+        }catch (\Exception $e) {
+            DB::rollback();
+            $ea = "Terjadi Kesalahan saat menambah foto blokir".$e->message;
+            return redirect()->route("blokir.index")->with('danger', $ea);
+        }
+
         $blokirs = Blokir::get();
         return view('admin.all-listblokir',[
             'blokirs' => $blokirs
@@ -59,33 +85,46 @@ class BlokirController extends Controller
             'nama'=> 'required',
             'nik'=> 'required',
             'jenis_blokir'=> 'required',
-            'foto'=> 'required',
             'keterangan'=> 'required',
             'masa_berlaku' => 'required',
+            'filenames' => 'required',
+            'filenames.*' => 'image'
         ]);
         if ($validator->fails()) {
             return redirect()->route("blokir.create")->with('danger', $validator->errors()->first());
         }
 
-        $uploadFolder = "img/foto_blokir/";
-        $image = $request->file('foto');
-        $imageName = time().'-'.$image->getClientOriginalName();
-        $image->move(public_path($uploadFolder), $imageName);
-        $image_link = $uploadFolder.$imageName;
+        DB::beginTransaction();
+        try {
 
-        $blokir = Blokir::create([
-            'nama'=> $request->nama,
-            'nik'=> $request->nik,
-            'jenis_blokir'=> $request->jenis_blokir,
-            'foto'=> $image_link,
-            'keterangan'=> $request->keterangan,
-            'masa_berlaku' => $request->masa_berlaku,
-        ]);
-
-        if($blokir){
+            $blokir  = new Blokir();
+            $blokir->nama = $request->nama;
+            $blokir->nik = $request->nik;
+            $blokir->jenis_blokir = $request->jenis_blokir;
+            $blokir->foto = "foto table lain";
+            $blokir->keterangan = $request->keterangan;
+            $blokir->masa_berlaku = $request->masa_berlaku;
+            $blokir->save();
+            if($request->hasfile('filenames')){
+                foreach($request->file('filenames') as $file){
+                    $uploadFolder = "img/foto_blokir/";
+                    $image = $file;
+                    $imageName = time().'-'.$image->getClientOriginalName();
+                    $image->move(public_path($uploadFolder), $imageName);
+                    $image_link = $uploadFolder.$imageName;
+                    
+                    $imagesblokir = new ImagesBlokir();
+                    $imagesblokir->blokir_id = $blokir->id;
+                    $imagesblokir->foto_blokir = $image_link;
+                    $imagesblokir->save();
+                }
+            }
+            DB::commit();
             return redirect()->route("blokir.index")->with('status', "Sukses menambah blokir");
-        }else{
-            return redirect()->route("blokir.index")->with('danger', "Terjadi Kesalahan saat menambah blokir.");
+        }catch (\Exception $e) {
+            DB::rollback();
+            $ea = "Terjadi Kesalahan saat menambah blokir".$e->message;
+            return redirect()->route("blokir.index")->with('danger', $ea);
         }
     }
 
@@ -135,24 +174,33 @@ class BlokirController extends Controller
             return redirect()->route("blokir.index")->with('danger', $validator->errors()->first());
         }
 
-        $blokir = Blokir::findOrFail($id);
-        $blokir->nama= $request->nama;
-        $blokir->nik = $request->nik;
-        $blokir->jenis_blokir = $request->jenis_blokir;
-        $blokir->keterangan = $request->keterangan;
-        $blokir->masa_berlaku =  $request->masa_berlaku;
-        if($request->hasfile('foto')){
-            $uploadFolder = "img/foto_blokir/";
-            $image = $request->file('foto');
-            $imageName = time().'-'.$image->getClientOriginalName();
-            $image->move(public_path($uploadFolder), $imageName);
-            $image_link = $uploadFolder.$imageName;
-            $blokir->foto = $image_link;
-        }
-
-        if($blokir->save()){
+        DB::beginTransaction();
+        try {
+            $blokir = Blokir::findOrFail($id);
+            $blokir->nama= $request->nama;
+            $blokir->nik = $request->nik;
+            $blokir->jenis_blokir = $request->jenis_blokir;
+            $blokir->keterangan = $request->keterangan;
+            $blokir->masa_berlaku =  $request->masa_berlaku;
+            $blokir->save();
+            if($request->hasfile('filenames')){
+                foreach($request->file('filenames') as $file){
+                    $uploadFolder = "img/foto_blokir/";
+                    $image = $file;
+                    $imageName = time().'-'.$image->getClientOriginalName();
+                    $image->move(public_path($uploadFolder), $imageName);
+                    $image_link = $uploadFolder.$imageName;
+                    
+                    $imagesblokir = new ImagesBlokir();
+                    $imagesblokir->blokir_id = $blokir->id;
+                    $imagesblokir->foto_blokir = $image_link;
+                    $imagesblokir->save();
+                }
+            }
+            DB::commit();
             return redirect()->route("blokir.index")->with('status', "Sukses mengedit blokir");
-        }else{
+        }catch (\Exception $e) {
+            DB::rollback();
             return redirect()->route("blokir.index")->with('danger', "Terjadi Kesalahan saat mengedit blokir.");
         }
     }

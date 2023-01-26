@@ -25,15 +25,21 @@ class PosSimbController extends Controller
     public function index(Request $request )
     {
         $date = Carbon::today();
+        $date_to = Carbon::today();
         $simbs = Simb::whereDate('created_at', '=', Carbon::today())->orderBy('id','DESC')->get();
         if($request->has("date")){
             $date = Carbon::createFromFormat('Y-m-d',  $request->date); 
             $simbs = Simb::whereDate('created_at', '=', $request->date)->orderBy('id','DESC')->get();
+            if($request->has('date_to')){
+                $date_to = Carbon::createFromFormat('Y-m-d',  $request->date_to); 
+                $simbs = Simb::whereDate('created_at', '>=', $request->date)->whereDate('created_at','<=',$request->date_to)->orderBy('id','DESC')->get();
+            }
         }
         
         return view('pos.listsimb',[
             'simbs' => $simbs,
-            'date' => $date->format('Y-m-d')
+            'date' => $date->format('Y-m-d'),
+            'date_to' => $date_to->format('Y-m-d'),
         ]);
     }
 

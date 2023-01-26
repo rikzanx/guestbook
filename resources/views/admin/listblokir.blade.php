@@ -35,6 +35,7 @@
                   <thead>
                   <tr>
                     <th>No</th>
+                    <th>Tanggal</th>
                     <th>Nama</th>
                     <th>NIK</th>
                     <th>Jenis Blokir</th>
@@ -49,13 +50,21 @@
                     @foreach ($blokirs as $item)     
                     <tr>
                         <td>{{ $jumlah-- }}</td>
+                        <td>{{ $item->created_at }}</td>
                         <td>{{ $item->nama }}</td>
                         <td>{{ $item->nik }}</td>
                         <td>{{ $item->jenis_blokir }}</td>
+                        @if(count($item->images) > 0)
+                          <td>Ada</td>
+                        @else
+                          <td>Tidak ada</td>
+                        @endif
                         <td>
-                          <a href="{{ asset($item->foto) }}" target="_blank">Lihat foto</a>
+                          <a href="{{ asset($item->images[0]->foto_blokir) }}" data-toggle="lightbox" data-title="{{ $item->name }}">
+                              <img src="{{ asset($item->images[0]->foto_blokir)  }}" style="width: 100px;height:100px;" alt="" srcset="">
+                          </a>
+                      </td>
                         <td>{{ $item->keterangan }}</td>
-                        </td>
                         <td>{{ $item->masa_berlaku }}</td>
                         <!-- @if($item->verifikasi != "Terverifikasi")
                         <td><i class="fas fa-trasss" style="color:red;" ></i> {{ $item->verifikasi }}</td>
@@ -76,6 +85,7 @@
                   <tfoot>
                     <tr>
                     <th>No</th>
+                    <th>Tanggal</th>
                     <th>Nama</th>
                     <th>NIK</th>
                     <th>Jenis Blokir</th>

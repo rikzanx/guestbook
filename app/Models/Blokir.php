@@ -18,4 +18,8 @@ class Blokir extends Model
         'keterangan',
         'masa_berlaku'
     ];
+
+    public function images(){
+        return $this->hasMany('App\Models\ImagesBlokir','blokir_id');
+    }
 }

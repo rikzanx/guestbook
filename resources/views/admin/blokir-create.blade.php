@@ -45,13 +45,14 @@
                   </div>
                   <div class="form-group">
                     <label for="exampleInputFile">Foto</label>
-                    <div class="input-group">
-                      <div class="custom-file">
-                        <input type="file" name="foto" class="custom-file-input" id="exampleInputFile">
-                        <label class="custom-file-label" for="exampleInputFile">Choose file</label>
-                      </div>
+                  </div>
+                  <div class="input-group hdtutos control-group lst increment" >
+                    <input type="file" name="filenames[]" class="myfrm form-control">
+                    <div class="input-group-btn"> 
+                      <button class="btn btn-success btn-add-image" type="button"><i class="fldemo glyphicon glyphicon-plus"></i>Add</button>
                     </div>
                   </div>
+                  
                   <div class="form-group">
                     <label>Jenis Blokir</label>
                     <select class="form-control" name="jenis_blokir">=
@@ -90,5 +91,22 @@
 @endsection
 
 @section('js')
-    
+<script type="text/javascript">
+  $(document).ready(function() {
+    $(".btn-add-image").click(function(){ 
+        var lsthmtl = `<div class="clone hide">
+                    <div class="hdtuto control-group lst input-group" style="margin-top:10px">
+                      <input type="file" name="filenames[]" class="myfrm form-control">
+                      <div class="input-group-btn"> 
+                        <button class="btn btn-danger" type="button"><i class="fldemo glyphicon glyphicon-remove"></i> Remove</button>
+                      </div>
+                    </div>
+                  </div>`;
+        $(".increment").after(lsthmtl);
+    });
+    $("body").on("click",".btn-danger",function(){ 
+        $(this).parents(".hdtuto").remove();
+    });
+  });
+</script>
 @endsection

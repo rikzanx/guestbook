@@ -25,15 +25,21 @@ class AdminController extends Controller
     public function index(Request $request)
     {
         $date = Carbon::today();
+        $date_to = Carbon::today();
         $guests = Guest::whereDate('created_at', '=', Carbon::today())->orderBy('id','DESC')->get();
         if($request->has("date")){
             $date = Carbon::createFromFormat('Y-m-d',  $request->date); 
-            $guests = Guest::whereDate('created_at', '=', $request->date)->orderBy('id','DESC')->get();
+            $guests = Guest::WhereDate('created_at','=',$date)->orderBy('id','DESC')->get();
+            if($request->has("date_to")){
+                $date_to = Carbon::createFromFormat('Y-m-d',  $request->date_to); 
+                $guests = Guest::whereDate('created_at', '>=' ,$request->date)->whereDate('created_at','<=',$request->date_to)->orderBy('id','DESC')->get();
+            }
         }
         
         return view('admin.listguest',[
             'guests' => $guests,
-            'date' => $date->format('Y-m-d')
+            'date' => $date->format('Y-m-d'),
+            'date_to' => $date_to->format('Y-m-d'),
         ]);
     }
 

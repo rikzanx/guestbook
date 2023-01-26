@@ -36,15 +36,23 @@
               
               <!-- /.card-header -->
               <div class="card-body">
-                <p><b>Tanggal terpilih : {{ $date }}</b></p>
+                <p><b>Tanggal terpilih :</b> {{ $date }} s/d {{ $date_to }} </p>
                 <div class="row">
                   <div class="col-12 col-sm-6 col-lg-4">
                     <form action="{{route('pos.visitor.index')}}">
                       <div class="form-group">
-                        <label for="exampleInputEmail1">Pilih Tanggal</label>
+                        <label for="exampleInputEmail1">Pilih Tanggal dari</label>
                         <input type="date" name="date" value="{{ $date }}" class="form-control pilih-tanggal" id="exampleInputEmail1" placeholder="NIK">
                       </div>
                       <button type="submit" class="btn btn-primary">Pilih</button>
+                      <a href="{{route('pos.visitor.index')}}" class="btn btn-secondary">Reset</a>
+
+                  </div>
+                  <div class="col-12 col-sm-6 col-lg-4">
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Pilih Tanggal sampai</label>
+                        <input type="date" name="date_to" value="{{ $date_to }}" class="form-control pilih-tanggal" id="exampleInputEmail1" placeholder="NIK">
+                      </div>
                     </form>
                   </div>
                 </div>
