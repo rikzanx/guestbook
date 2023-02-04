@@ -29,6 +29,7 @@
               <div class="card-header">
                 
                 <a href="{{ route('index') }}" class="btn btn-success"><span class="fas fa-plus"></span> tambah KIB</a>
+                <button class="btn btn-success float-right" onclick="modalverifikasiall()"><span class="fas fa-check"></span> Verifikasi Semuanya</button>
                 
                 {{-- <a href="{{ route('index') }}" class="btn btn-success float-right"><span class="fas fa-plus"></span> tambah KIB</a> --}}
 
@@ -55,7 +56,25 @@
                       </div>
                     </form>
                   </div>
+                  <div class="col-12 col-sm-6 col-lg-4">
+                    <form action="{{route('guest.index')}}">
+                      <div class="form-group">
+                        <label for="exampleInputEmail1">Pilih Bulan</label>
+                        <br>
+                        <select class="form-control" name="bulan" id="bulan">
+                          @foreach ($months as $item)  
+                            <option value="{{ $loop->index }}"  {{ ($loop->index == $bulan )?'selected':'' }}>{{$item}}</option>
+                          @endforeach
+                        </select>
+                      </div>
+                      <button type="submit" class="btn btn-primary">Pilih</button>
+                      <a href="{{route('guest.index')}}" class="btn btn-secondary">Reset</a>
+                    </form>
+                  </div>
                 </div>
+                <br>
+                
+              </div>
                 
                 <br>
                 <table id="example1" class="table table-bordered table-striped">
@@ -173,6 +192,31 @@
     <!-- /.modal-dialog -->
 </div>
   <!-- /.modal -->
+  <div class="modal fade" id="modal-verifikasi">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Peringatan</h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p>Apakah anda yakin akan memverifikasi semua data&hellip;</p>
+          {{-- <p></p> --}}
+        </div>
+        <form action="{{ route('verifikasiall') }}" method="GET" class="delete-form">
+            @csrf
+            <div class="modal-footer justify-content-between">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-danger">Verifikasi</button>
+            </div>
+        </form>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+</div>
 @endsection
 
 @section('js')
@@ -195,6 +239,10 @@
         var url = $('.delete-form').attr('action');
         $('.delete-form').attr('action',url.replace(':id',id));
         $('#modal-default').modal('show');
+    }
+    function modalverifikasiall(){
+        // alert(id);
+        $('#modal-verifikasi').modal('show');
     }
     $(function () {
       //Date picker

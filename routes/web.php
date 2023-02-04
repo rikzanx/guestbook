@@ -13,6 +13,7 @@ use App\Http\Controllers\PosVisitorController;
 use App\Http\Controllers\SimbController;
 use App\Http\Controllers\AdminSimbController;
 use App\Http\Controllers\PosSimbController;
+use App\Http\Controllers\WebhookController;
 
 /*
 |--------------------------------------------------------------------------
@@ -24,13 +25,16 @@ use App\Http\Controllers\PosSimbController;
 | contains the "web" middleware group. Now create something great!
 |
 */
-
+Route::resource('webhook', WebhookController::class);
 Route::get('/', [GuestController::class, 'create'])->name('index');  
 Route::get('admin/login', [CustomAuthController::class, 'index'])->name('login');
 Route::post('guest/store', [GuestController::class,'store'])->name('gueststore');  
 Route::resource('visitor',VisitorController::class);
 Route::resource('simb',SimbController::class);
 Route::get('guest/verifikasi/{id}',[AdminController::class,'verifikasi'])->name('verifikasikib');
+Route::get('guest/verifikasiall',[AdminController::class,'verifikasiall'])->name('verifikasiall');
+Route::get('verifikasisimball',[AdminSimbController::class,'verifikasiall'])->name('verifikasisimball');
+Route::get('verifikasivisitorall',[AdminVisitorController::class,'verifikasiall'])->name('verifikasivisitorall');
 Route::group(['prefix' => 'admin'],function(){
 
     Route::post('custom-login', [CustomAuthController::class, 'customLogin'])->name('login.custom'); 

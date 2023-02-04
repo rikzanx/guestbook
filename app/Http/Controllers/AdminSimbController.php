@@ -9,6 +9,7 @@ use Session;
 use Auth;
 use App\Models\Guest;
 use App\Models\Simb;
+use Illuminate\Support\Facades\DB;
 
 class AdminSimbController extends Controller
 {
@@ -24,6 +25,14 @@ class AdminSimbController extends Controller
      */
     public function index(Request $request )
     {
+        $bulan = 0;
+        $months = array(
+            0 => "Pilih Bulan"
+        );
+        for ($i = 1; $i <= 12; $i++) {
+            $timestamp = mktime(0, 0, 0, $i, 1);
+            array_push($months,date('F', $timestamp));
+        }
         $date = Carbon::today();
         $date_to = Carbon::today();
         $simbs = Simb::whereDate('created_at', '=', Carbon::today())->orderBy('id','DESC')->get();
@@ -36,11 +45,27 @@ class AdminSimbController extends Controller
                 $simbs = Simb::whereDate('created_at', '>=' ,$request->date)->whereDate('created_at','<=',$request->date_to)->orderBy('id','DESC')->get();
             }
         }
+
+        if($request->has("bulan")){
+            try{
+                if($request->bulan >= 1 && $request->bulan <= 12){
+                    $bulan = $request->bulan;
+                    $date = Carbon::createFromFormat('Y-m',  '2023-'.$request->bulan)->startOfMonth(); 
+                    $date_to = Carbon::createFromFormat('Y-m',  '2023-'.$request->bulan)->endOfMonth(); 
+                    $simbs = Simb::whereDate('created_at', '>=' ,$date)->whereDate('created_at','<=',$date_to)->orderBy('id','DESC')->get();
+                }
+
+            }catch(\Exception $e){
+                // dd($e);
+            }
+        }
         
         return view('admin.listsimb',[
             'simbs' => $simbs,
             'date' => $date->format('Y-m-d'),
             'date_to' => $date_to->format('Y-m-d'),
+            'months' => $months,
+            'bulan' => $bulan
         ]);
     }
 
@@ -182,6 +207,20 @@ class AdminSimbController extends Controller
             return redirect()->route("admin.simb.index")->with('status', "Sukses memverfikasi Simb");
         }else{
             return redirect()->route("admin.simb.index")->with('danger', "Terjadi Kesalahan saat memverfikasi Simb.");
+        }
+    }
+    public function verifikasiall()
+    {
+        // dd("pke");
+        DB::beginTransaction();
+        try{
+            $update = Simb::where('verifikasi','!=','Terverifikasi')->update(["verifikasi"=>"Terverifikasi"]);
+            
+            DB::commit();
+            return redirect()->route("admin.simb.index")->with('status', "Sukses memverfikasi SIM B");
+        }catch(\Exception $e){
+            DB::rollback();
+            return redirect()->route("admin.simb.index")->with('danger', "Terjadi Kesalahan saat memverfikasi SIM B.");
         }
     }
 

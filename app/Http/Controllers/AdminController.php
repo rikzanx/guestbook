@@ -8,6 +8,7 @@ use Validator;
 use Session;
 use Auth;
 use App\Models\Guest;
+use Illuminate\Support\Facades\DB;
 
 
 class AdminController extends Controller
@@ -24,6 +25,14 @@ class AdminController extends Controller
      */
     public function index(Request $request)
     {
+        $bulan = 0;
+        $months = array(
+            0 => "Pilih Bulan"
+        );
+        for ($i = 1; $i <= 12; $i++) {
+            $timestamp = mktime(0, 0, 0, $i, 1);
+            array_push($months,date('F', $timestamp));
+        }
         $date = Carbon::today();
         $date_to = Carbon::today();
         $guests = Guest::whereDate('created_at', '=', Carbon::today())->orderBy('id','DESC')->get();
@@ -35,11 +44,28 @@ class AdminController extends Controller
                 $guests = Guest::whereDate('created_at', '>=' ,$request->date)->whereDate('created_at','<=',$request->date_to)->orderBy('id','DESC')->get();
             }
         }
+
+        if($request->has("bulan")){
+            try{
+                if($request->bulan >= 1 && $request->bulan <= 12){
+                    $bulan = $request->bulan;
+                    $date = Carbon::createFromFormat('Y-m',  '2023-'.$request->bulan)->startOfMonth(); 
+                    $date_to = Carbon::createFromFormat('Y-m',  '2023-'.$request->bulan)->endOfMonth(); 
+                    $guests = Guest::whereDate('created_at', '>=' ,$date)->whereDate('created_at','<=',$date_to)->orderBy('id','DESC')->get();
+                }
+
+            }catch(\Exception $e){
+
+            }
+        }
         
         return view('admin.listguest',[
             'guests' => $guests,
             'date' => $date->format('Y-m-d'),
             'date_to' => $date_to->format('Y-m-d'),
+            'months' => $months,
+            'bulan' => $bulan
+
         ]);
     }
 
@@ -167,6 +193,21 @@ class AdminController extends Controller
         if($guest->save()){
             return redirect()->route("guest.index")->with('status', "Sukses memverfikasi KIB");
         }else{
+            return redirect()->route("guest.index")->with('danger', "Terjadi Kesalahan saat memverfikasi KIB.");
+        }
+    }
+
+    public function verifikasiall()
+    {
+        dd("pke");
+        DB::beginTransaction();
+        try{
+            $update = Guest::where('verifikasi','!=','Terverifikasi')->update(["verifikasi"=>"Terverifikasi"]);
+            
+            DB::commit();
+            return redirect()->route("guest.index")->with('status', "Sukses memverfikasi KIB");
+        }catch(\Exception $e){
+            DB::rollback();
             return redirect()->route("guest.index")->with('danger', "Terjadi Kesalahan saat memverfikasi KIB.");
         }
     }
