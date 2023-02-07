@@ -211,7 +211,7 @@ class AdminSimbController extends Controller
     }
     public function verifikasiall()
     {
-        // dd("pke");
+       
         DB::beginTransaction();
         try{
             $update = Simb::where('verifikasi','!=','Terverifikasi')->update(["verifikasi"=>"Terverifikasi"]);

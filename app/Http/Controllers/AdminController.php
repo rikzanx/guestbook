@@ -199,7 +199,7 @@ class AdminController extends Controller
 
     public function verifikasiall()
     {
-        dd("pke");
+        
         DB::beginTransaction();
         try{
             $update = Guest::where('verifikasi','!=','Terverifikasi')->update(["verifikasi"=>"Terverifikasi"]);

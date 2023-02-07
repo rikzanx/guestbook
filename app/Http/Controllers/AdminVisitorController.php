@@ -208,7 +208,7 @@ class AdminVisitorController extends Controller
     }
     public function verifikasiall()
     {
-        // dd("pke");
+        
         DB::beginTransaction();
         try{
             $update = Visitor::where('verifikasi','!=','Terverifikasi')->update(["verifikasi"=>"Terverifikasi"]);
