@@ -30,7 +30,7 @@
 
       <form method="POST" action="{{ route('suratjalan.store') }}" enctype="multipart/form-data">
         @csrf
-        <p>Nomor Surat / No Berkas</p>
+        <p>Nomor Surat Jalan</p>
         <div class="input-group mb-3">
           <input type="text" class="form-control" name="nomor_surat" placeholder="Jawaban Anda">
           <div class="input-group-append">
