@@ -27,7 +27,7 @@ class BlokirController extends Controller
         
 
         $blokirs = Blokir::get();
-        return view('admin.listblokir',[
+        return view('admin.blokir.listblokir',[
             'blokirs' => $blokirs
         ]);
     }
@@ -57,7 +57,7 @@ class BlokirController extends Controller
         }
 
         $blokirs = Blokir::get();
-        return view('admin.all-listblokir',[
+        return view('admin.blokir.all-listblokir',[
             'blokirs' => $blokirs
         ]);
     }
@@ -70,7 +70,7 @@ class BlokirController extends Controller
     public function create()
     {
         // dd($category);
-        return view('admin.blokir-create');
+        return view('admin.blokir.blokir-create');
     }
 
     /**
@@ -149,7 +149,7 @@ class BlokirController extends Controller
     {
         $blokir = Blokir::findOrFail($id);
         // dd($category);
-        return view('admin.blokir-edit',[
+        return view('admin.blokir.blokir-edit',[
             'blokir' => $blokir
         ]);
     }

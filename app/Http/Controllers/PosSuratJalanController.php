@@ -8,9 +8,9 @@ use Validator;
 use Session;
 use Auth;
 use App\Models\Guest;
-use App\Models\Simb;
+use App\Models\SuratJalan;
 
-class PosSimbController extends Controller
+class PosSuratJalanController extends Controller
 {
     protected $user;
     public function __construct(Request $request)
@@ -26,18 +26,18 @@ class PosSimbController extends Controller
     {
         $date = Carbon::today();
         $date_to = Carbon::today();
-        $simbs = Simb::whereDate('created_at', '=', Carbon::today())->orderBy('id','DESC')->get();
+        $suratjalans = SuratJalan::whereDate('created_at', '=', Carbon::today())->orderBy('id','DESC')->get();
         if($request->has("date")){
             $date = Carbon::createFromFormat('Y-m-d',  $request->date); 
-            $simbs = Simb::whereDate('created_at', '=', $request->date)->orderBy('id','DESC')->get();
+            $suratjalans = SuratJalan::whereDate('created_at', '=', $request->date)->orderBy('id','DESC')->get();
             if($request->has('date_to')){
                 $date_to = Carbon::createFromFormat('Y-m-d',  $request->date_to); 
-                $simbs = Simb::whereDate('created_at', '>=', $request->date)->whereDate('created_at','<=',$request->date_to)->orderBy('id','DESC')->get();
+                $suratjalans = SuratJalan::whereDate('created_at', '>=', $request->date)->whereDate('created_at','<=',$request->date_to)->orderBy('id','DESC')->get();
             }
         }
         
-        return view('pos.simb.listsimb',[
-            'simbs' => $simbs,
+        return view('pos.suratjalan.listsuratjalan',[
+            'suratjalans' => $suratjalans,
             'date' => $date->format('Y-m-d'),
             'date_to' => $date_to->format('Y-m-d'),
         ]);
@@ -83,10 +83,10 @@ class PosSimbController extends Controller
      */
     public function edit($id)
     {
-        $simb = Simb::findOrFail($id);
+        $suratjalan = SuratJalan::findOrFail($id);
         // dd($category);
-        return view('pos.simb.simb-edit',[
-            'simb' => $simb
+        return view('pos.suratjalan.suratjalan-edit',[
+            'suratjalan' => $suratjalan
         ]);
     }
 
@@ -112,60 +112,60 @@ class PosSimbController extends Controller
             'verifikasi' => 'required',
         ]);
         if ($validator->fails()) {
-            return redirect()->route("pos.simb.index")->with('danger', $validator->errors()->first());
+            return redirect()->route("pos.suratjalan.index")->with('danger', $validator->errors()->first());
         }
 
-        $simb = Simb::findOrFail($id);
-        $simb->nama = $request->nama;
-        $simb->nik = $request->nik;
-        $simb->nomor_surat = $request->nomor_surat;
-        $simb->departemen = $request->departemen;
-        $simb->dari = $request->dari;
-        $simb->tujuan = $request->tujuan;
-        $simb->no_mb = $request->no_mb;
-        $simb->barang = $request->barang;
-        $simb->pos_izin = $request->pos_izin;
-        $simb->verifikasi = $request->verifikasi;
-        if($request->has('foto_simb')){
-            $uploadFolder = "img/foto_simb/";
-            $image = $request->file('foto_simb');
+        $suratjalan = SuratJalan::findOrFail($id);
+        $suratjalan->nama = $request->nama;
+        $suratjalan->nik = $request->nik;
+        $suratjalan->nomor_surat = $request->nomor_surat;
+        $suratjalan->departemen = $request->departemen;
+        $suratjalan->dari = $request->dari;
+        $suratjalan->tujuan = $request->tujuan;
+        $suratjalan->no_mb = $request->no_mb;
+        $suratjalan->barang = $request->barang;
+        $suratjalan->pos_izin = $request->pos_izin;
+        $suratjalan->verifikasi = $request->verifikasi;
+        if($request->has('foto_suratjalan')){
+            $uploadFolder = "img/foto_suratjalan/";
+            $image = $request->file('foto_suratjalan');
             $imageName = time().'-'.$image->getClientOriginalName();
             $image->move(public_path($uploadFolder), $imageName);
-            $simb->foto_simb = $uploadFolder.$imageName;
+            $suratjalan->foto_suratjalan = $uploadFolder.$imageName;
         }
         if($request->has('lainnya')){
-            $simb->lainnya = $request->lainnya;
+            $suratjalan->lainnya = $request->lainnya;
         }
-        if($simb->save()){
-            return redirect()->route("pos.simb.index")->with('status', "Sukses mengedit simb");
+        if($suratjalan->save()){
+            return redirect()->route("pos.suratjalan.index")->with('status', "Sukses mengedit suratjalan");
         }else{
-            return redirect()->route("pos.simb.index")->with('danger', "Terjadi Kesalahan saat mengedit simb.");
+            return redirect()->route("pos.suratjalan.index")->with('danger', "Terjadi Kesalahan saat mengedit suratjalan.");
         }
     }
 
     public function keluar(Request $request, $id)
     {
         // dd('ok');
-        $simb = Simb::findOrFail($id);
-        $simb->keluar = Carbon::now()->format('h:i');
+        $suratjalan = SuratJalan::findOrFail($id);
+        $suratjalan->keluar = Carbon::now()->format('h:i');
 
-        if($simb->save()){
-            return redirect()->route("pos.simb.index")->with('status', "Sukses logout simb");
+        if($suratjalan->save()){
+            return redirect()->route("pos.suratjalan.index")->with('status', "Sukses logout suratjalan");
         }else{
-            return redirect()->route("pos.simb.index")->with('danger', "Terjadi Kesalahan saat logout simb.");
+            return redirect()->route("pos.suratjalan.index")->with('danger', "Terjadi Kesalahan saat logout suratjalan.");
         }
     }
 
     public function verifikasi(Request $request, $id)
     {
         // dd('ok');
-        $simb = Simb::findOrFail($id);
-        $simb->verifikasi = "Terverifikasi";
+        $suratjalan = SuratJalan::findOrFail($id);
+        $suratjalan->verifikasi = "Terverifikasi";
 
-        if($simb->save()){
-            return redirect()->route("pos.simb.index")->with('status', "Sukses memverfikasi Simb");
+        if($suratjalan->save()){
+            return redirect()->route("pos.suratjalan.index")->with('status', "Sukses memverfikasi SuratJalan");
         }else{
-            return redirect()->route("pos.simb.index")->with('danger', "Terjadi Kesalahan saat memverfikasi Simb.");
+            return redirect()->route("pos.suratjalan.index")->with('danger', "Terjadi Kesalahan saat memverfikasi SuratJalan.");
         }
     }
 
@@ -177,10 +177,10 @@ class PosSimbController extends Controller
      */
     public function destroy($id)
     {
-        if(Simb::destroy($id)){
-            return redirect()->route("pos.simb.index")->with('status', "Sukses menghapus simb");
+        if(SuratJalan::destroy($id)){
+            return redirect()->route("pos.suratjalan.index")->with('status', "Sukses menghapus suratjalan");
         }else {
-            return redirect()->route("pos.simb.index")->with('danger', "Terjadi Kesalahan");
+            return redirect()->route("pos.suratjalan.index")->with('danger', "Terjadi Kesalahan");
         }
     }
 }

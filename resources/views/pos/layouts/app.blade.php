@@ -95,6 +95,14 @@
               </p>
             </a>
           </li>
+          <li class="nav-item">
+            <a href="{{ route('pos.suratjalan.index') }}" class="nav-link">
+              <i class="nav-icon fas fa-th"></i>
+              <p>
+                Daftar Surat Jalan
+              </p>
+            </a>
+          </li>
           {{-- <li class="nav-item">
             <a href="{{ route('pos.index') }}" class="nav-link">
               <i class="nav-icon fas fa-building"></i>

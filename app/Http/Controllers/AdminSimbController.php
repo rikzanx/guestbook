@@ -60,7 +60,7 @@ class AdminSimbController extends Controller
             }
         }
         
-        return view('admin.listsimb',[
+        return view('admin.simb.listsimb',[
             'simbs' => $simbs,
             'date' => $date->format('Y-m-d'),
             'date_to' => $date_to->format('Y-m-d'),
@@ -78,7 +78,7 @@ class AdminSimbController extends Controller
             $simbs = Simb::orderBy('id','DESC')->get();
         }
         
-        return view('admin.all-listsimb',[
+        return view('admin.simb.all-listsimb',[
             'simbs' => $simbs,
             'date' => $date->format('Y-m-d')
         ]);
@@ -126,7 +126,7 @@ class AdminSimbController extends Controller
     {
         $simb = Simb::findOrFail($id);
         // dd($category);
-        return view('admin.simb-edit',[
+        return view('admin.simb.simb-edit',[
             'simb' => $simb
         ]);
     }

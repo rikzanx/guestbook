@@ -36,7 +36,7 @@ class PosVisitorController extends Controller
             }
         }
         
-        return view('pos.listvisitor',[
+        return view('pos.visitor.listvisitor',[
             'visitors' => $visitors,
             'date' => $date->format('Y-m-d'),
             'date_to' => $date_to->format('Y-m-d'),
@@ -85,7 +85,7 @@ class PosVisitorController extends Controller
     {
         $visitor = Visitor::findOrFail($id);
         // dd($category);
-        return view('pos.visitor-edit',[
+        return view('pos.visitor.visitor-edit',[
             'visitor' => $visitor
         ]);
     }

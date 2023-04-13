@@ -35,7 +35,7 @@ class PosController extends Controller
             }
         }
         
-        return view('pos.listguest',[
+        return view('pos.guest.listguest',[
             'guests' => $guests,
             'date' => $date->format('Y-m-d'),
             'date_to' => $date_to->format('Y-m-d'),
@@ -45,7 +45,7 @@ class PosController extends Controller
     public function indexblokir()
     {
         $blokirs = Blokir::get();
-        return view('pos.listblokir',[
+        return view('pos.blokir.listblokir',[
             'blokirs' => $blokirs
         ]);
     }

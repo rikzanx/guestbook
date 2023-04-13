@@ -59,7 +59,7 @@ class AdminController extends Controller
             }
         }
         
-        return view('admin.listguest',[
+        return view('admin.guest.listguest',[
             'guests' => $guests,
             'date' => $date->format('Y-m-d'),
             'date_to' => $date_to->format('Y-m-d'),
@@ -84,7 +84,7 @@ class AdminController extends Controller
             $guests = Guest::orderBy('id','DESC')->get();
         }
         
-        return view('admin.all-listguest',[
+        return view('admin.guest.all-listguest',[
             'guests' => $guests,
             'date' => $date->format('Y-m-d')
         ]);
@@ -132,7 +132,7 @@ class AdminController extends Controller
     {
         $guest = Guest::findOrFail($id);
         // dd($category);
-        return view('admin.guest-edit',[
+        return view('admin.guest.guest-edit',[
             'guest' => $guest
         ]);
     }

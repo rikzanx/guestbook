@@ -8,10 +8,10 @@ use Validator;
 use Session;
 use Auth;
 use App\Models\Guest;
-use App\Models\Visitor;
+use App\Models\SuratJalan;
 use Illuminate\Support\Facades\DB;
 
-class AdminVisitorController extends Controller
+class AdminSuratJalanController extends Controller
 {
     protected $user;
     public function __construct(Request $request)
@@ -35,32 +35,32 @@ class AdminVisitorController extends Controller
         }
         $date = Carbon::today();
         $date_to = Carbon::today();
-        $visitors = Visitor::whereDate('created_at', '=', Carbon::today())->orderBy('id','DESC')->get();
+        $suratjalans = SuratJalan::whereDate('created_at', '=', Carbon::today())->orderBy('id','DESC')->get();
+
         if($request->has("date")){
             $date = Carbon::createFromFormat('Y-m-d',  $request->date); 
-            $visitors = Visitor::whereDate('created_at', '=', $request->date)->orderBy('id','DESC')->get();
+            $suratjalans = SuratJalan::whereDate('created_at', '=', $request->date)->orderBy('id','DESC')->get();
             if($request->has("date_to")){
-                $date_to = Carbon::createFromFormat('Y-m-d',  $request->date_to); 
-                $visitors = Visitor::whereDate('created_at', '>=' ,$request->date)->whereDate('created_at','<=',$request->date_to)->orderBy('id','DESC')->get();
+                $date_to = Carbon::createFromFormat('Y-m-d',  $request->date); 
+                $suratjalans = SuratJalan::whereDate('created_at', '>=' ,$request->date)->whereDate('created_at','<=',$request->date_to)->orderBy('id','DESC')->get();
             }
         }
+
         if($request->has("bulan")){
             try{
                 if($request->bulan >= 1 && $request->bulan <= 12){
                     $bulan = $request->bulan;
                     $date = Carbon::createFromFormat('Y-m',  '2023-'.$request->bulan)->startOfMonth(); 
                     $date_to = Carbon::createFromFormat('Y-m',  '2023-'.$request->bulan)->endOfMonth(); 
-                    $visitors = Visitor::whereDate('created_at', '>=' ,$date)->whereDate('created_at','<=',$date_to)->orderBy('id','DESC')->get();
+                    $suratjalans = SuratJalan::whereDate('created_at', '>=' ,$date)->whereDate('created_at','<=',$date_to)->orderBy('id','DESC')->get();
                 }
 
             }catch(\Exception $e){
                 // dd($e);
             }
         }
-        
-        
-        return view('admin.visitor.listvisitor',[
-            'visitors' => $visitors,
+        return view('admin.suratjalan.listsuratjalan',[
+            'suratjalans' => $suratjalans,
             'date' => $date->format('Y-m-d'),
             'date_to' => $date_to->format('Y-m-d'),
             'months' => $months,
@@ -71,14 +71,14 @@ class AdminVisitorController extends Controller
     public function all(Request $request )
     {
         $date = Carbon::today();
-        $visitors = Visitor::orderBy('id','DESC')->get();
+        $suratjalans = SuratJalan::orderBy('id','DESC')->get();
         if($request->has("date")){
             $date = Carbon::createFromFormat('Y-m-d',  $request->date); 
-            $visitors = Visitor::orderBy('id','DESC')->get();
+            $suratjalans = SuratJalan::orderBy('id','DESC')->get();
         }
         
-        return view('admin.visitor.all-listvisitor',[
-            'visitors' => $visitors,
+        return view('admin.suratjalan.all-listsuratjalan',[
+            'suratjalans' => $suratjalans,
             'date' => $date->format('Y-m-d')
         ]);
     }
@@ -123,10 +123,10 @@ class AdminVisitorController extends Controller
      */
     public function edit($id)
     {
-        $visitor = Visitor::findOrFail($id);
+        $suratjalan = SuratJalan::findOrFail($id);
         // dd($category);
-        return view('admin.visitor.visitor-edit',[
-            'visitor' => $visitor
+        return view('admin.suratjalan.suratjalan-edit',[
+            'suratjalan' => $suratjalan
         ]);
     }
 
@@ -142,82 +142,84 @@ class AdminVisitorController extends Controller
         $validator = Validator::make($request->all(), [
             'nama' => 'required',
             'nik' => 'required',
-            'nama_perusahaan' => 'required',
+            'nomor_surat' => 'required',
+            'departemen' => 'required',
+            'dari' => 'required',
             'tujuan' => 'required',
-            'pos_asal' => 'required',
+            'no_mb' => 'required',
+            'barang' => 'required',
+            'pos_izin' => 'required',
             'verifikasi' => 'required',
-            'no_hp' => 'required',
         ]);
         if ($validator->fails()) {
-            return redirect()->route("admin.visitor.index")->with('danger', $validator->errors()->first());
+            return redirect()->route("admin.suratjalan.index")->with('danger', $validator->errors()->first());
         }
 
-        $visitor = Visitor::findOrFail($id);
-        $visitor->nama = $request->nama;
-        $visitor->nik = $request->nik;
-        $visitor->nama_perusahaan = $request->nama_perusahaan;
-        $visitor->tujuan = $request->tujuan;
-        $visitor->nomor_kartu = $request->nomor_kartu;
-        $visitor->pos_asal = $request->pos_asal;
-        $visitor->verifikasi = $request->verifikasi;
-        $visitor->no_hp = $request->no_hp;
-        if($request->has('foto_ktp')){
-            $uploadFolder = "img/foto_ktp/";
-            $image = $request->file('foto_ktp');
+        $suratjalan = SuratJalan::findOrFail($id);
+        $suratjalan->nama = $request->nama;
+        $suratjalan->nik = $request->nik;
+        $suratjalan->nomor_surat = $request->nomor_surat;
+        $suratjalan->departemen = $request->departemen;
+        $suratjalan->dari = $request->dari;
+        $suratjalan->tujuan = $request->tujuan;
+        $suratjalan->no_mb = $request->no_mb;
+        $suratjalan->barang = $request->barang;
+        $suratjalan->pos_izin = $request->pos_izin;
+        $suratjalan->verifikasi = $request->verifikasi;
+        if($request->has('foto_suratjalan')){
+            $uploadFolder = "img/foto_suratjalan/";
+            $image = $request->file('foto_suratjalan');
             $imageName = time().'-'.$image->getClientOriginalName();
             $image->move(public_path($uploadFolder), $imageName);
-            $visitor->foto_ktp = $uploadFolder.$imageName;
+            $suratjalan->foto_suratjalan = $uploadFolder.$imageName;
         }
         if($request->has('lainnya')){
-            $visitor->lainnya = $request->lainnya;
+            $suratjalan->lainnya = $request->lainnya;
         }
-        if($request->has('keluar')){
-            $visitor->keluar = $request->keluar;
-        }
-        if($visitor->save()){
-            return redirect()->route("admin.visitor.index")->with('status', "Sukses mengedit visitor");
+        if($suratjalan->save()){
+            return redirect()->route("admin.suratjalan.index")->with('status', "Sukses mengedit suratjalan");
         }else{
-            return redirect()->route("admin.visitor.index")->with('danger', "Terjadi Kesalahan saat mengedit visitor.");
+            return redirect()->route("admin.suratjalan.index")->with('danger', "Terjadi Kesalahan saat mengedit suratjalan.");
         }
     }
 
     public function keluar(Request $request, $id)
     {
         // dd('ok');
-        $visitor = Visitor::findOrFail($id);
-        $visitor->keluar = Carbon::now()->format('h:i');
+        $suratjalan = SuratJalan::findOrFail($id);
+        $suratjalan->keluar = Carbon::now()->format('h:i');
 
-        if($visitor->save()){
-            return redirect()->route("admin.visitor.index")->with('status', "Sukses logout visitor");
+        if($suratjalan->save()){
+            return redirect()->route("admin.suratjalan.index")->with('status', "Sukses logout suratjalan");
         }else{
-            return redirect()->route("admin.visitor.index")->with('danger', "Terjadi Kesalahan saat logout visitor.");
+            return redirect()->route("admin.suratjalan.index")->with('danger', "Terjadi Kesalahan saat logout suratjalan.");
         }
     }
 
     public function verifikasi(Request $request, $id)
     {
         // dd('ok');
-        $visitor = Visitor::findOrFail($id);
-        $visitor->verifikasi = "Terverifikasi";
+        $suratjalan = SuratJalan::findOrFail($id);
+        $suratjalan->verifikasi = "Terverifikasi";
 
-        if($visitor->save()){
-            return redirect()->route("admin.visitor.index")->with('status', "Sukses memverfikasi Visitor");
+        if($suratjalan->save()){
+            return redirect()->route("admin.suratjalan.index")->with('status', "Sukses memverfikasi SuratJalan");
         }else{
-            return redirect()->route("admin.visitor.index")->with('danger', "Terjadi Kesalahan saat memverfikasi Visitor.");
+            return redirect()->route("admin.suratjalan.index")->with('danger', "Terjadi Kesalahan saat memverfikasi SuratJalan.");
         }
     }
     public function verifikasiall()
     {
-        
+       
         DB::beginTransaction();
         try{
-            $update = Visitor::where('verifikasi','!=','Terverifikasi')->update(["verifikasi"=>"Terverifikasi"]);
+            $update = SuratJalan::where('verifikasi','!=','Terverifikasi')->update(["verifikasi"=>"Terverifikasi"]);
             
             DB::commit();
-            return redirect()->route("admin.simb.index")->with('status', "Sukses memverfikasi Visitor");
+            return redirect()->route("admin.suratjalan.index")->with('status', "Sukses memverfikasi SIM B");
         }catch(\Exception $e){
             DB::rollback();
-            return redirect()->route("admin.simb.index")->with('danger', "Terjadi Kesalahan saat memverfikasi Visitor.");
+            return redirect()->route("admin.suratjalan.index")->with('danger', "Terjadi Kesalahan saat memverfikasi SIM B.");
         }
     }
 
@@ -229,10 +231,10 @@ class AdminVisitorController extends Controller
      */
     public function destroy($id)
     {
-        if(Visitor::destroy($id)){
-            return redirect()->route("admin.visitor.index")->with('status', "Sukses menghapus visitor");
+        if(SuratJalan::destroy($id)){
+            return redirect()->route("admin.suratjalan.index")->with('status', "Sukses menghapus suratjalan");
         }else {
-            return redirect()->route("admin.visitor.index")->with('danger', "Terjadi Kesalahan");
+            return redirect()->route("admin.suratjalan.index")->with('danger', "Terjadi Kesalahan");
         }
     }
 }
