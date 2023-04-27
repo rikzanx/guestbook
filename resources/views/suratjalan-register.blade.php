@@ -30,45 +30,35 @@
 
       <form method="POST" action="{{ route('suratjalan.store') }}" enctype="multipart/form-data">
         @csrf
-        <p>Nomor Surat / No Berkas</p>
+        <p><b><u>ISI LEMBAR SURAT JALAN</u></b></p>
+        <p>Deskripsi / Nama Barang</p>
         <div class="input-group mb-3">
-          <input type="text" class="form-control" name="nomor_surat" placeholder="Jawaban Anda">
+          <input type="text" class="form-control" name="nama_barang" placeholder="Jawaban Anda">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-userss"></span>
             </div>
           </div>
         </div>
-        <p>Nama</p>
+        <p>Qty / Kuantitas / Jumlah</p>
         <div class="input-group mb-3">
-          <input type="text" class="form-control" name="nama" placeholder="Jawaban Anda">
+          <input type="number" class="form-control" name="jumlah" placeholder="Jawaban Anda">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-userss"></span>
             </div>
           </div>
         </div>
-        <p>NIK</p>
+        <p>Bentuk Packing (Bungkus)</p>
         <div class="input-group mb-3">
-          <input type="text" class="form-control" name="nik" placeholder="Jawaban Anda">
+          <input type="text" class="form-control" name="bentuk" placeholder="Jawaban Anda">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-userss"></span>
             </div>
           </div>
         </div>
-      
-        <p>Bag / Dep / Ro</p>
-        <div class="input-group mb-3">
-          <input type="text" class="form-control" name="departemen" placeholder="Jawaban Anda">
-          <div class="input-group-append">
-            <div class="input-group-text">
-              <span class="fas fa-userss"></span>
-            </div>
-          </div>
-        </div>
-        <p><b><u>UNTUK MEMBAWA BARANG</u></b></p>
-        <p>Dari</p>
+        <p>Asal (Nama PT / Bagian)</p>
         <div class="input-group mb-3">
           <input type="text" class="form-control" name="dari" placeholder="Jawaban Anda">
           <div class="input-group-append">
@@ -86,64 +76,62 @@
             </div>
           </div>
         </div>
-        <p>No. MB / No SPBK / No POL Kendaraan</p>
+        <p>No PO (No Dokumen)</p>
         <div class="input-group mb-3">
-          <input type="text" class="form-control" name="no_mb" placeholder="Jawaban Anda">
+          <input type="text" class="form-control" name="nomor_po" placeholder="Jawaban Anda">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-userss"></span>
             </div>
           </div>
         </div>
-        <p>Barang yang dibawa</p>
+        <p><b><u>NAMA PENANGGUNG JAWAB</u></b></p>
+        <p>Nama Penanggung Jawab</p>
         <div class="input-group mb-3">
-          <textarea name="barang" class="form-control" id="barang" cols="30" rows="10" placeholder="Jawaban Anda"></textarea>
-          {{-- <input type="text" class="form-control" name="barang" placeholder="Jawaban Anda"> --}}
+          <input type="text" class="form-control" name="nama_penanggung_jawab" placeholder="Jawaban Anda">
           <div class="input-group-append">
             <div class="input-group-text">
               <span class="fas fa-userss"></span>
             </div>
           </div>
         </div>
-        <p>Upload Foto Surat Jalan</p>
+        <p>NIK / No KIB / No Lainnya</p>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" name="nomor" placeholder="Jawaban Anda">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-userss"></span>
+            </div>
+          </div>
+        </div>
+        <p><b><u>TRAFFIC KETERANGAN</u></b></p>
+        <p>IN (Masuk Pukul)</p>
+        <div class="input-group mb-3">
+          <input type="time" class="form-control" name="waktu_masuk" placeholder="Jawaban Anda">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-userss"></span>
+            </div>
+          </div>
+        </div>
+        <p>OUT (Keluar Pukul)</p>
+        <div class="input-group mb-3">
+          <input type="time" class="form-control" name="waktu_keluar" placeholder="Jawaban Anda">
+          <div class="input-group-append">
+            <div class="input-group-text">
+              <span class="fas fa-userss"></span>
+            </div>
+          </div>
+        </div>
+        <p>Upload Foto Lembar Surat Jalan</p>
         <div class="form-group">
           <div class="input-group">
             <div class="custom-file">
-              <input type="file" name="foto_suratjalan" class="custom-file-input" id="exampleInputFile">
+              <input type="file" name="foto_suratjalans[]" class="custom-file-input" id="exampleInputFile" multiple>
               <label class="custom-file-label" for="exampleInputFile">Choose file</label>
             </div>
           </div>
         </div>
-        <p>Izin dari POS (pos pemberi izin)</p>
-        <div class="form-check">
-          <input type="radio" class="form-check-input" id="exampleCheck1" name="pos_izin" value="POS ZONA 1">
-          <label class="form-check-label" for="exampleCheck1">POS ZONA 1</label>
-          </div>
-          <div class="form-check">
-          <input type="radio" class="form-check-input" id="exampleCheck2" name="pos_izin" value="POS ZONA 2">
-          <label class="form-check-label" for="exampleCheck2">POS ZONA 2</label>
-          </div>
-          <div class="form-check">
-            <input type="radio" class="form-check-input" id="exampleCheck3" name="pos_izin" value="POS ZONA 3">
-            <label class="form-check-label" for="exampleCheck3">POS ZONA 3</label>
-          </div>
-          <div class="form-check">
-            <input type="radio" class="form-check-input" id="exampleCheck4" name="pos_izin" value="POS ZONA 4">
-            <label class="form-check-label" for="exampleCheck4">POS ZONA 4</label>
-          </div>
-          <div class="form-check">
-            <input type="radio" class="form-check-input" id="exampleCheck5" name="pos_izin" value="POS ZONA 5">
-            <label class="form-check-label" for="exampleCheck5">POS ZONA 5</label>
-            </div>
-          <div class="form-check">
-            <input type="radio" class="form-check-input" id="exampleCheck6" name="pos_izin" value="POS ZONA KAWASAN">
-            <label class="form-check-label" for="exampleCheck6">POS ZONA KAWASAN</label>
-            </div>
-          <div class="form-check">
-          <input type="radio" class="form-check-input" id="exampleCheck7" name="pos_izin" value="lainnya">
-          <label class="form-check-label" for="exampleCheck7">Yang Lain</label>
-        </div>
-        <input type="text" class="form-control" name="lainnya" placeholder="Isi yang lain">
         <br>
         <div class="row">
           <!-- /.col -->

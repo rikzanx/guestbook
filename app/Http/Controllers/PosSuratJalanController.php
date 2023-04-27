@@ -9,6 +9,8 @@ use Session;
 use Auth;
 use App\Models\Guest;
 use App\Models\SuratJalan;
+use App\Models\ImagesSuratJalan;
+use Illuminate\Support\Facades\DB;
 
 class PosSuratJalanController extends Controller
 {
@@ -24,22 +26,46 @@ class PosSuratJalanController extends Controller
      */
     public function index(Request $request )
     {
+        $bulan = 0;
+        $months = array(
+            0 => "Pilih Bulan"
+        );
+        for ($i = 1; $i <= 12; $i++) {
+            $timestamp = mktime(0, 0, 0, $i, 1);
+            array_push($months,date('F', $timestamp));
+        }
         $date = Carbon::today();
         $date_to = Carbon::today();
-        $suratjalans = SuratJalan::whereDate('created_at', '=', Carbon::today())->orderBy('id','DESC')->get();
+        $suratjalans = SuratJalan::with('images')->whereDate('created_at', '=', Carbon::today())->orderBy('id','DESC')->get();
+
         if($request->has("date")){
             $date = Carbon::createFromFormat('Y-m-d',  $request->date); 
-            $suratjalans = SuratJalan::whereDate('created_at', '=', $request->date)->orderBy('id','DESC')->get();
-            if($request->has('date_to')){
-                $date_to = Carbon::createFromFormat('Y-m-d',  $request->date_to); 
-                $suratjalans = SuratJalan::whereDate('created_at', '>=', $request->date)->whereDate('created_at','<=',$request->date_to)->orderBy('id','DESC')->get();
+            $suratjalans = SuratJalan::with('images')->whereDate('created_at', '=', $request->date)->orderBy('id','DESC')->get();
+            if($request->has("date_to")){
+                $date_to = Carbon::createFromFormat('Y-m-d',  $request->date); 
+                $suratjalans = SuratJalan::with('images')->whereDate('created_at', '>=' ,$request->date)->whereDate('created_at','<=',$request->date_to)->orderBy('id','DESC')->get();
             }
         }
-        
+
+        if($request->has("bulan")){
+            try{
+                if($request->bulan >= 1 && $request->bulan <= 12){
+                    $bulan = $request->bulan;
+                    $date = Carbon::createFromFormat('Y-m',  '2023-'.$request->bulan)->startOfMonth(); 
+                    $date_to = Carbon::createFromFormat('Y-m',  '2023-'.$request->bulan)->endOfMonth(); 
+                    $suratjalans = SuratJalan::with('images')->whereDate('created_at', '>=' ,$date)->whereDate('created_at','<=',$date_to)->orderBy('id','DESC')->get();
+                }
+
+            }catch(\Exception $e){
+                // dd($e);
+            }
+        }
         return view('pos.suratjalan.listsuratjalan',[
             'suratjalans' => $suratjalans,
             'date' => $date->format('Y-m-d'),
             'date_to' => $date_to->format('Y-m-d'),
+            'months' => $months,
+            'bulan' => $bulan
         ]);
     }
 
@@ -100,46 +126,60 @@ class PosSuratJalanController extends Controller
     public function update(Request $request, $id)
     {
         $validator = Validator::make($request->all(), [
-            'nama' => 'required',
-            'nik' => 'required',
-            'nomor_surat' => 'required',
-            'departemen' => 'required',
+            'nama_barang' => 'required',
+            'jumlah' => 'required',
+            'bentuk' => 'required',
             'dari' => 'required',
             'tujuan' => 'required',
-            'no_mb' => 'required',
-            'barang' => 'required',
-            'pos_izin' => 'required',
+            'nomor_po' => 'required',
+            'nama_penanggung_jawab' => 'required',
+            'nomor' => 'required',
+            'waktu_masuk' => 'required',
+            'waktu_keluar' => 'required',
             'verifikasi' => 'required',
         ]);
         if ($validator->fails()) {
             return redirect()->route("pos.suratjalan.index")->with('danger', $validator->errors()->first());
         }
+        // dd($request->all());
+        DB::beginTransaction();
+        try {
+            $suratjalan = SuratJalan::findOrFail($id);;
+            $suratjalan->nama_barang = $request->nama_barang;
+            $suratjalan->jumlah = $request->jumlah;
+            $suratjalan->bentuk = $request->bentuk;
+            $suratjalan->dari = $request->dari;
+            $suratjalan->tujuan = $request->tujuan;
+            $suratjalan->nomor_po = $request->nomor_po;
+            $suratjalan->nama_penanggung_jawab = $request->nama_penanggung_jawab;
+            $suratjalan->nomor = $request->nomor;
+            $suratjalan->waktu_masuk = $request->waktu_masuk;
+            $suratjalan->waktu_keluar = $request->waktu_keluar;
+            $suratjalan->verifikasi = $request->verifikasi;
+            $suratjalan->save();
+            if($request->hasfile('foto_suratjalans')){
+                $delete = ImagesSuratJalan::where('surat_jalan_id',$id)->delete();
+                foreach($request->file('foto_suratjalans') as $file)
+                {
+                    $imagesuratjalan = new ImagesSuratJalan();
+                    $uploadFolder = "img/foto_suratjalan/";
+                    $image = $file;
+                    $imageName = time().'-'.$image->getClientOriginalName();
+                    $image->move(public_path($uploadFolder), $imageName);
+                    $image_link = $uploadFolder.$imageName;
+                    $imagesuratjalan->surat_jalan_id = $suratjalan->id;
+                    $imagesuratjalan->image_surat_jalan = $image_link;
+                    $imagesuratjalan->save();
+                }
+            }
+            //commit
+            DB::commit();
+            return redirect()->route("pos.suratjalan.index")->with('status', "Sukses mengedit Surat Jalan");
+        }catch(\Exception $e){
+            DB::rollback();
+            $ea = "Terjadi Kesalahan saat mengedit Surat Jalan.".$e->message;
+            return redirect()->route("pos.suratjalan.index")->with('danger', "Terjadi Kesalahan saat mengedit Surat Jalan.");
 
-        $suratjalan = SuratJalan::findOrFail($id);
-        $suratjalan->nama = $request->nama;
-        $suratjalan->nik = $request->nik;
-        $suratjalan->nomor_surat = $request->nomor_surat;
-        $suratjalan->departemen = $request->departemen;
-        $suratjalan->dari = $request->dari;
-        $suratjalan->tujuan = $request->tujuan;
-        $suratjalan->no_mb = $request->no_mb;
-        $suratjalan->barang = $request->barang;
-        $suratjalan->pos_izin = $request->pos_izin;
-        $suratjalan->verifikasi = $request->verifikasi;
-        if($request->has('foto_suratjalan')){
-            $uploadFolder = "img/foto_suratjalan/";
-            $image = $request->file('foto_suratjalan');
-            $imageName = time().'-'.$image->getClientOriginalName();
-            $image->move(public_path($uploadFolder), $imageName);
-            $suratjalan->foto_suratjalan = $uploadFolder.$imageName;
-        }
-        if($request->has('lainnya')){
-            $suratjalan->lainnya = $request->lainnya;
-        }
-        if($suratjalan->save()){
-            return redirect()->route("pos.suratjalan.index")->with('status', "Sukses mengedit suratjalan");
-        }else{
-            return redirect()->route("pos.suratjalan.index")->with('danger', "Terjadi Kesalahan saat mengedit suratjalan.");
         }
     }
 
@@ -177,9 +217,16 @@ class PosSuratJalanController extends Controller
      */
     public function destroy($id)
     {
-        if(SuratJalan::destroy($id)){
+        DB::beginTransaction();
+        try{
+            SuratJalan::destroy($id);
+            $delete = ImagesSuratJalan::where('surat_jalan_id',$id)->delete();
+            DB::commit();
             return redirect()->route("pos.suratjalan.index")->with('status', "Sukses menghapus suratjalan");
-        }else {
+
+        }catch (\Exception $e) {
+            DB::rollback();
+            $ea = "Terjadi Kesalahan saat menghapus produk".$e->message;
             return redirect()->route("pos.suratjalan.index")->with('danger', "Terjadi Kesalahan");
         }
     }

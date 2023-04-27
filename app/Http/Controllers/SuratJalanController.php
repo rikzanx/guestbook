@@ -6,8 +6,10 @@ use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Validator;
 use Session;
+use Illuminate\Support\Facades\DB;
 
 use App\Models\SuratJalan;
+use App\Models\ImagesSuratJalan;
 
 class SuratJalanController extends Controller
 {
@@ -43,46 +45,59 @@ class SuratJalanController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nama' => 'required',
-            'nik' => 'required',
-            'nomor_surat' => 'required',
-            'departemen' => 'required',
+            'nama_barang' => 'required',
+            'jumlah' => 'required',
+            'bentuk' => 'required',
             'dari' => 'required',
             'tujuan' => 'required',
-            'no_mb' => 'required',
-            'barang' => 'required',
-            'foto_suratjalan' => 'required',
-            'pos_izin' => 'required',
+            'nomor_po' => 'required',
+            'nama_penanggung_jawab' => 'required',
+            'nomor' => 'required',
+            'waktu_masuk' => 'required',
+            'waktu_keluar' => 'required',
+            'foto_suratjalans' => 'required'
         ]);
         if ($validator->fails()) {
             // dd($validator->errors());
             return redirect()->route("suratjalan.index")->with('danger', $validator->errors()->first());
         }
         // dd($request->all());
-        $uploadFolder = "img/foto_suratjalan/";
-        $image = $request->file('foto_suratjalan');
-        $imageName = time().'-'.$image->getClientOriginalName();
-        $image->move(public_path($uploadFolder), $imageName);
-        $image_link = $uploadFolder.$imageName;
+        DB::beginTransaction();
+        try {
+            $suratjalan = new SuratJalan();
+            $suratjalan->nama_barang = $request->nama_barang;
+            $suratjalan->jumlah = $request->jumlah;
+            $suratjalan->bentuk = $request->bentuk;
+            $suratjalan->dari = $request->dari;
+            $suratjalan->tujuan = $request->tujuan;
+            $suratjalan->nomor_po = $request->nomor_po;
+            $suratjalan->nama_penanggung_jawab = $request->nama_penanggung_jawab;
+            $suratjalan->nomor = $request->nomor;
+            $suratjalan->waktu_masuk = $request->waktu_masuk;
+            $suratjalan->waktu_keluar = $request->waktu_keluar;
+            $suratjalan->save();
+            if($request->hasfile('foto_suratjalans')){
+                foreach($request->file('foto_suratjalans') as $file)
+                {
+                    $imagesuratjalan = new ImagesSuratJalan();
+                    $uploadFolder = "img/foto_suratjalan/";
+                    $image = $file;
+                    $imageName = time().'-'.$image->getClientOriginalName();
+                    $image->move(public_path($uploadFolder), $imageName);
+                    $image_link = $uploadFolder.$imageName;
+                    $imagesuratjalan->surat_jalan_id = $suratjalan->id;
+                    $imagesuratjalan->image_surat_jalan = $image_link;
+                    $imagesuratjalan->save();
+                }
+            }
+            //commit
+            DB::commit();
+            return redirect()->route("suratjalan.index")->with('status', "Sukses menambahkan Surat Jalan");
+        }catch(\Exception $e){
+            DB::rollback();
+            $ea = "Terjadi Kesalahan saat menambahkan Surat Jalan.".$e->message;
+            return redirect()->route("suratjalan.index")->with('danger', "Terjadi Kesalahan saat menambahkan Surat Jalan.");
 
-        $suratjalan = SuratJalan::create([
-            'nama' => $request->nama,
-            'nik' => $request->nik,
-            'nomor_surat' => $request->nomor_surat,
-            'departemen' => $request->departemen,
-            'dari' => $request->dari,
-            'tujuan' => $request->tujuan,
-            'no_mb' => $request->no_mb,
-            'barang' => $request->barang,
-            'foto_suratjalan' => $image_link,
-            'pos_izin' => $request->pos_izin,
-            'lainnya' => ($request->has('lainnya')) ? $request->lainnya : null,
-        ]);
-
-        if($suratjalan){
-            return redirect()->route("suratjalan.index")->with('status', "Sukses menambahkan SIM B");
-        }else{
-            return redirect()->route("suratjalan.index")->with('danger', "Terjadi Kesalahan saat menambahkan SIM B.");
         }
     }
 

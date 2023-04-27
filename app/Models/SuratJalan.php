@@ -11,17 +11,19 @@ class SuratJalan extends Model
     protected $primaryKey = 'id';
     
     protected $fillable = [
-        'nama',
-        'nik',
-        'nomor_surat',
-        'departemen',
+        'nama_barang',
+        'jumlah',
+        'bentuk',
         'dari',
         'tujuan',
-        'no_mb',
-        'barang',
-        'foto_suratjalan',
-        'pos_izin',
-        'lainnya',
+        'nomor_po',
+        'nama_penanggung_jawab',
+        'nomor',
+        'waktu_masuk',
+        'waktu_keluar',
         'verifikasi'
     ];
+    public function images(){
+        return $this->hasMany('App\Models\ImagesSuratJalan','surat_jalan_id');
+    }
 }

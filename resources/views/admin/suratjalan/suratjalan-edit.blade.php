@@ -37,24 +37,19 @@
                 {{ method_field('PATCH') }}
                 <div class="card-body">
                   <div class="form-group">
-                    <label for="exampleInputEmail1">Nomor Surat SIM B</label>
-                    <input type="text" name="nomor_surat" value="{{ $suratjalan->nomor_surat }}" class="form-control" id="exampleInputEmail1" placeholder="Jawaban Anda">
+                    <label for="exampleInputEmail1">Deskripsi / Nama Barang</label>
+                    <input type="text" name="nama_barang" value="{{ $suratjalan->nama_barang }}" class="form-control" id="exampleInputEmail1" placeholder="Jawaban Anda">
                   </div>
                   <div class="form-group">
-                    <label for="exampleInputEmail1">Nama</label>
-                    <input type="text" name="nama" value="{{ $suratjalan->nama }}" class="form-control" id="exampleInputEmail1" placeholder="Jawaban Anda">
+                    <label for="exampleInputEmail1">Qty / Kuantitas / Jumlah</label>
+                    <input type="text" name="jumlah" value="{{ $suratjalan->jumlah }}" class="form-control" id="exampleInputEmail1" placeholder="Jawaban Anda">
                   </div>
                   <div class="form-group">
-                    <label for="exampleInputEmail1">NIK</label>
-                    <input type="text" name="nik" value="{{ $suratjalan->nik }}" class="form-control" id="exampleInputEmail1" placeholder="Jawaban Anda">
+                    <label for="exampleInputEmail1">Bentuk Packing (Bungkus)</label>
+                    <input type="text" name="bentuk" value="{{ $suratjalan->bentuk }}" class="form-control" id="exampleInputEmail1" placeholder="Jawaban Anda">
                   </div>
                   <div class="form-group">
-                    <label for="exampleInputEmail1">Bag / Dep / Ro</label>
-                    <input type="text" name="departemen" value="{{ $suratjalan->departemen }}" class="form-control" id="exampleInputEmail1" placeholder="Jawaban Anda">
-                  </div>
-                  <p>Untuk membawa barang</p>
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Dari</label>
+                    <label for="exampleInputEmail1">Asal (Nama PT / Bagian)</label>
                     <input type="text" name="dari" value="{{ $suratjalan->dari }}" class="form-control" id="exampleInputEmail1" placeholder="Jawaban Anda">
                   </div>
                   <div class="form-group">
@@ -62,56 +57,37 @@
                     <input type="text" name="tujuan" value="{{ $suratjalan->tujuan }}" class="form-control" id="exampleInputEmail1" placeholder="Jawaban Anda">
                   </div>
                   <div class="form-group">
-                    <label for="exampleInputEmail1">No. MB / No SPBK / No POL Kendaraan</label>
-                    <input type="text" name="no_mb" value="{{ $suratjalan->no_mb }}" class="form-control" id="exampleInputEmail1" placeholder="Jawaban Anda">
+                    <label for="exampleInputEmail1">No PO (No Dokumen)</label>
+                    <input type="text" name="nomor_po" value="{{ $suratjalan->nomor_po }}" class="form-control" id="exampleInputEmail1" placeholder="Jawaban Anda">
                   </div>
 
+                  <p>Nama Penanggung Jawab</p>
                   <div class="form-group">
-                    <label for="exampleInputEmail1">Barang yang dibawa</label>
-                    <textarea name="barang" id="barang" class="form-control" cols="30" rows="10">{{ $suratjalan->barang }}</textarea>
+                    <label for="exampleInputEmail1">Nama Penanggung Jawab</label>
+                    <input type="text" name="nama_penanggung_jawab" value="{{ $suratjalan->nama_penanggung_jawab }}" class="form-control" id="exampleInputEmail1" placeholder="Jawaban Anda">
                   </div>
                   <div class="form-group">
-                    <label for="exampleInputFile">Foto Surat Jalan</label>
+                    <label for="exampleInputEmail1">NIK / No KIB / No Lainnya</label>
+                    <input type="text" name="nomor" value="{{ $suratjalan->nomor }}" class="form-control" id="exampleInputEmail1" placeholder="Jawaban Anda">
+                  </div>
+                  <p>TRAFFIC KETERANGAN</p>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">IN (Masuk Pukul)</label>
+                    <input type="time" name="waktu_masuk" value="{{ $suratjalan->waktu_masuk }}" class="form-control" id="exampleInputEmail1" placeholder="Jawaban Anda">
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputEmail1">OUT (Keluar Pukul)</label>
+                    <input type="time" name="waktu_keluar" value="{{ $suratjalan->waktu_keluar }}" class="form-control" id="exampleInputEmail1" placeholder="Jawaban Anda">
+                  </div>
+                  <div class="form-group">
+                    <label for="exampleInputFile">Upload Foto Lembar Surat Jalan</label>
                     <div class="input-group">
                       <div class="custom-file">
-                        <input type="file" name="foto_suratjalan" class="custom-file-input" id="exampleInputFile">
+                        <input type="file" name="foto_suratjalans[]" class="custom-file-input" id="exampleInputFile">
                         <label class="custom-file-label" for="exampleInputFile">Choose file</label>
                       </div>
                     </div>
                   </div>
-                  <div class="form-group">
-                    <label for="exampleInputEmail1">Izin dari POS (POS pemberi izin)</label>
-                    <div class="form-check">
-                        <input type="radio" class="form-check-input" id="exampleCheck1" name="pos_izin" value="POS ZONA 1" {{ ($suratjalan->pos_izin  == "POS ZONA 1" )?'checked':'' }}>
-                    <label class="form-check-label" for="exampleCheck1">POS ZONA 1</label>
-                    </div>
-                    <div class="form-check">
-                    <input type="radio" class="form-check-input" id="exampleCheck2" name="pos_izin" value="POS ZONA 2" {{ ($suratjalan->pos_izin  == "POS ZONA 2" )?'checked':'' }}>
-                    <label class="form-check-label" for="exampleCheck2">POS ZONA 2</label>
-                    </div>
-                    <div class="form-check">
-                      <input type="radio" class="form-check-input" id="exampleCheck3" name="pos_izin" value="POS ZONA 3" {{ ($suratjalan->pos_izin  == "POS ZONA 3" )?'checked':'' }}>
-                      <label class="form-check-label" for="exampleCheck3">POS ZONA 3</label>
-                    </div>
-                    <div class="form-check">
-                      <input type="radio" class="form-check-input" id="exampleCheck4" name="pos_izin" value="POS ZONA 4" {{ ($suratjalan->pos_izin  == "POS ZONA 4" )?'checked':'' }}>
-                      <label class="form-check-label" for="exampleCheck4">POS ZONA 4</label>
-                    </div>
-                    <div class="form-check">
-                      <input type="radio" class="form-check-input" id="exampleCheck5" name="pos_izin" value="POS ZONA 5" {{ ($suratjalan->pos_izin  == "POS ZONA 5" )?'checked':'' }}>
-                      <label class="form-check-label" for="exampleCheck5">POS ZONA 5</label>
-                      </div>
-                    <div class="form-check">
-                      <input type="radio" class="form-check-input" id="exampleCheck6" name="pos_izin" value="POS ZONA KAWASAN" {{ ($suratjalan->pos_izin  == "POS ZONA KAWASAN" )?'checked':'' }}>
-                      <label class="form-check-label" for="exampleCheck6">POS ZONA KAWASAN</label>
-                      </div>
-                    <div class="form-check">
-                      <input type="radio" class="form-check-input" id="exampleCheck7" name="pos_izin" value="lainnya" {{ ($suratjalan->pos_izin  == "lainnya" )?'checked':'' }}>
-                      <label class="form-check-label" for="exampleCheck7">Yang Lain</label>
-                    </div>
-                    <input type="text" class="form-control" name="lainnya" value="{{$suratjalan->lainnya}}" placeholder="Isi yang lain">
-                  </div>
-                  
                   <div class="form-group">
                     <label>Status</label>
                     <select class="form-control" name="verifikasi">

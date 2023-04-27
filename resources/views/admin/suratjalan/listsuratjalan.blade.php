@@ -78,18 +78,19 @@
                   <thead>
                   <tr>
                     <th>No</th>
-                    <th>Nomor Surat</th>
-                    <th>Nama</th>
-                    <th>NIK</th>
-                    <th>Bag / Dep / Ro</th>
-                    <th>Dari</th>
+                    <th>Deskripsi / Nama Barang</th>
+                    <th>Jumlah</th>
+                    <th>Bentuk</th>
+                    <th>Asal</th>
                     <th>Tujuan</th>
-                    <th>No.MB/No.SPBK/No.POL</th>
-                    <th>Barang dibawa</th>
-                    <th>Foto SuratJalan</th>
-                    <th>Izin POS</th>
-                    <th>Status</th>
+                    <th>No.PO (No Dokumen)</th>
+                    <th>Nama PJ</th>
+                    <th>NIK / No KIB / No</th>
+                    <th>Foto</th>
+                    <th>IN (Masuk Pukul)</th>
+                    <th>OUT (Keluar Pukul)</th>
                     <th>Tanggal</th>
+                    <th>Status</th>
                     <th>Aksi</th>
                   </tr>
                   </thead>
@@ -99,26 +100,29 @@
                         
                     <tr>
                         <td>{{ $jumlah-- }}</td>
-                        <td>{{ $item->nomor_surat }}</td>
-                        <td>{{ $item->nama }}</td>
-                        <td>{{ $item->nik }}</td>
-                        <td>{{ $item->departemen }}</td>
+                        <td>{{ $item->nama_barang }}</td>
+                        <td>{{ $item->jumlah }}</td>
+                        <td>{{ $item->bentuk }}</td>
                         <td>{{ $item->dari }}</td>
                         <td>{{ $item->tujuan }}</td>
-                        <td>{{ $item->no_mb }}</td>
-                        <td>{{ $item->barang }}</td>
+                        <td>{{ $item->nomor_po }}</td>
+                        <td>{{ $item->nama_penanggung_jawab }}</td>
+                        <td>{{ $item->nomor }}</td>
                         <td>
-                          <a href="{{ asset($item->foto_suratjalan) }}" target="_blank">Lihat foto</a>
+                          @foreach($item->images as $foto)
+                            <a href="{{ asset($foto->image_surat_jalan) }}" target="_blank">Lihat foto</a>
+                          @endforeach
                         </td>
-                        <td>{{ ($item->pos_izin == 'lainnya') ? $item->pos_izin." (".$item->lainnya.")":$item->pos_izin }}</td>
+                        <td>{{ $item->waktu_masuk }}</td>
+                        <td>{{ $item->waktu_keluar }}</td>
+                        <td>{{ $item->created_at }}</td>
                         @if($item->verifikasi != "Terverifikasi")
                         <td><i class="fas fa-trasss" style="color:red;" ></i> {{ $item->verifikasi }}</td>
                         @else
                         <td><i class="fas fa-check" style="color:green;" ></i> {{ $item->verifikasi }}</td>
                         @endif
-                        <td>{{ $item->created_at }}</td>
                         <td>
-                            @if($item->verifikasi != "Terverifikasi")
+                          @if($item->verifikasi != "Terverifikasi")
                             <a class="btn btn-success" href="{{ route('verifikasisuratjalan',$item->id) }}"><span class="fas fa-check"></span></a>
                             @endif
                             <a class="btn btn-primary" href="{{ route('admin.suratjalan.edit',$item->id) }}"><span class="fas fa-edit"></span></a>
@@ -130,18 +134,19 @@
                   <tfoot>
                     <tr>
                       <th>No</th>
-                      <th>Nomor Surat</th>
-                      <th>Nama</th>
-                      <th>NIK</th>
-                      <th>Bag / Dep / Ro</th>
-                      <th>Dari</th>
+                      <th>Deskripsi / Nama Barang</th>
+                      <th>Jumlah</th>
+                      <th>Bentuk</th>
+                      <th>Asal</th>
                       <th>Tujuan</th>
-                      <th>No.MB/No.SPBK/No.POL</th>
-                      <th>Barang dibawa</th>
-                      <th>Foto SuratJalan</th>
-                      <th>Izin POS</th>
-                      <th>Status</th>
+                      <th>No.PO (No Dokumen)</th>
+                      <th>Nama PJ</th>
+                      <th>NIK / No KIB / No</th>
+                      <th>Foto</th>
+                      <th>IN (Masuk Pukul)</th>
+                      <th>OUT (Keluar Pukul)</th>
                       <th>Tanggal</th>
+                      <th>Status</th>
                       <th>Aksi</th>
                     </tr>
                   </tfoot>
