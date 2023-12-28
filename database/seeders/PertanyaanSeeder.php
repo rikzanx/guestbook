@@ -14,7 +14,7 @@ class PertanyaanSeeder extends Seeder
     public function run()
     {
         $pertanyaan = \App\Models\Pertanyaan::create([
-            'kode' => 'kuisioner-kib24jam',
+            'kode' => 'kuisioner-kib24jam2',
             'pertanyaan' => 'Rating penilaian pelayanan Kantor KIB (Keramahan Petugas, Kemudahan Pelayanan, dan ANTI PENYUAPAN)',
             'catatan' => 'dibuat oleh seeder'
         ]);

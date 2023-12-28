@@ -9,6 +9,7 @@ use Session;
 
 use App\Models\Guest;
 use App\Models\Pertanyaan;
+use App\Models\Jawaban;
 use App\Mail\GuestMail;
 use Mail;
 
@@ -31,7 +32,7 @@ class GuestController extends Controller
      */
     public function create()
     {
-        $pertanyaans = Pertanyaan::where('kode','kuisioner-kib24jam')->with('values')->get();
+        $pertanyaans = Pertanyaan::with('values')->get();
         $today = Carbon::now()->isoFormat('D MMMM Y');
         return view('guest-register',[
             "today" => $today,
@@ -48,26 +49,32 @@ class GuestController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            // 'nama_badan_usaha' => 'required',
-            // 'lokasi_pekerjaan'=> 'required',
-            // 'departemen'=> 'required',
-            // 'jenis_pekerjaan'=> 'required',
-            // 'jumlah_personil'=> 'required',
-            // 'foto_lembar_depan'=> 'required',
-            // 'nama_safety_upload'=> 'required',
-            // 'no_hp'=> 'required',
+            'nama_badan_usaha' => 'required',
+            'lokasi_pekerjaan'=> 'required',
+            'departemen'=> 'required',
+            'jenis_pekerjaan'=> 'required',
+            'jumlah_personil'=> 'required',
+            'foto_lembar_depan'=> 'required',
+            'nama_safety_upload'=> 'required',
+            'no_hp'=> 'required',
+            'jawaban' => 'required'
         ]);
         if ($validator->fails()) {
             // dd($validator->errors());
             return redirect()->route("index")->with('danger', $validator->errors()->first());
         }
-        $pertanyaans = Pertanyaan::where('kode','kuisioner-kib24jam')->with('values')->get();
-        foreach($pertanyaans as $indexpertanyaan=>$pertanyaan){
-            $name = $pertanyaan->kode.'_'.$indexpertanyaan;
-            if($request::has("$name")){
-                dd($request->all());
+        if($request->has('jawaban')){
+            $jawabans = $request->jawaban;
+            foreach($jawabans as $key=>$jawaban){
+                $pertanyaan_id = $key;
+                $value = $jawaban;
+                Jawaban::create([
+                    'pertanyaan_id' => $pertanyaan_id,
+                    'jawaban' => $value
+                ]);
             }
         }
+        // dd($request->all());
         $uploadFolder = "img/foto_lembar_depan/";
         $image = $request->file('foto_lembar_depan');
         $imageName = time().'-'.$image->getClientOriginalName();
