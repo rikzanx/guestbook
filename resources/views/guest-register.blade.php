@@ -119,6 +119,17 @@
                 </div>
             </div>
         </div>
+        @foreach($pertanyaans as $indexpertanyaan=>$pertanyaan)
+        <p>{{ $pertanyaan->pertanyaan }}</p>
+        <div class="mb-3">
+            @foreach($pertanyaan->values as $indexvalue=>$value)
+            <div class="form-check">
+              <input type="radio" class="form-check-input" id="{{ $pertanyaan->kode.'_'.$indexpertanyaan.'_'.$indexvalue }}" name="{{ $pertanyaan->kode.'_'.$indexpertanyaan }}" value="{{ $value->value }}">
+              <label class="form-check-label" for="{{ $pertanyaan->kode.'_'.$indexpertanyaan.'_'.$indexvalue }}">{{ $value->value }}</label>
+            </div>
+            @endforeach
+        </div>
+        @endforeach
         <div class="row">
           <!-- /.col -->
           <div class="col-12">

@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddKeluarToVisitorTable extends Migration
+class CreateImageSuratJalansTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class AddKeluarToVisitorTable extends Migration
      */
     public function up()
     {
-        Schema::table('visitors', function (Blueprint $table) {
-            $table->time("keluar")->nullable();
+        Schema::create('images_surat_jalans', function (Blueprint $table) {
+            $table->id();
+            $table->integer("surat_jalan_id");
+            $table->string("image_surat_jalan");
+            $table->timestamps();
         });
     }
 
@@ -25,8 +28,6 @@ class AddKeluarToVisitorTable extends Migration
      */
     public function down()
     {
-        Schema::table('visitors', function (Blueprint $table) {
-            $table->dropColumn("keluar");
-        });
+        Schema::dropIfExists('images_surat_jalans');
     }
 }

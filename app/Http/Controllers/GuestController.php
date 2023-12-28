@@ -8,6 +8,7 @@ use Validator;
 use Session;
 
 use App\Models\Guest;
+use App\Models\Pertanyaan;
 use App\Mail\GuestMail;
 use Mail;
 
@@ -30,9 +31,11 @@ class GuestController extends Controller
      */
     public function create()
     {
+        $pertanyaans = Pertanyaan::where('kode','kuisioner-kib24jam')->with('values')->get();
         $today = Carbon::now()->isoFormat('D MMMM Y');
         return view('guest-register',[
-            "today" => $today
+            "today" => $today,
+            "pertanyaans" => $pertanyaans
         ]);
     }
 
@@ -45,20 +48,26 @@ class GuestController extends Controller
     public function store(Request $request)
     {
         $validator = Validator::make($request->all(), [
-            'nama_badan_usaha' => 'required',
-            'lokasi_pekerjaan'=> 'required',
-            'departemen'=> 'required',
-            'jenis_pekerjaan'=> 'required',
-            'jumlah_personil'=> 'required',
-            'foto_lembar_depan'=> 'required',
-            'nama_safety_upload'=> 'required',
-            'no_hp'=> 'required',
+            // 'nama_badan_usaha' => 'required',
+            // 'lokasi_pekerjaan'=> 'required',
+            // 'departemen'=> 'required',
+            // 'jenis_pekerjaan'=> 'required',
+            // 'jumlah_personil'=> 'required',
+            // 'foto_lembar_depan'=> 'required',
+            // 'nama_safety_upload'=> 'required',
+            // 'no_hp'=> 'required',
         ]);
         if ($validator->fails()) {
             // dd($validator->errors());
             return redirect()->route("index")->with('danger', $validator->errors()->first());
         }
-        // dd($request->all());
+        $pertanyaans = Pertanyaan::where('kode','kuisioner-kib24jam')->with('values')->get();
+        foreach($pertanyaans as $indexpertanyaan=>$pertanyaan){
+            $name = $pertanyaan->kode.'_'.$indexpertanyaan;
+            if($request::has("$name")){
+                dd($request->all());
+            }
+        }
         $uploadFolder = "img/foto_lembar_depan/";
         $image = $request->file('foto_lembar_depan');
         $imageName = time().'-'.$image->getClientOriginalName();

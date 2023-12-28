@@ -26,6 +26,7 @@ class CreateSimbsTable extends Migration
             $table->string("pos_izin");
             $table->string("lainnya")->nullable();
             $table->string("verifikasi")->default('Belum Terferivikasi');
+            $table->string('nomor_surat');
             $table->timestamps();
         });
     }

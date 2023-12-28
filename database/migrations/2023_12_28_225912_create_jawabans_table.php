@@ -4,18 +4,21 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddVerifikasiToVisitorTable extends Migration
+class CreateJawabansTable extends Migration
 {
     /**
      * Run the migrations.
      *
      * @return void
      */
-    
     public function up()
     {
-        Schema::table('visitors', function (Blueprint $table) {
-            $table->string('verifikasi')->default('Belum Terferivikasi');
+        Schema::create('jawabans', function (Blueprint $table) {
+            $table->id();
+            $table->integer("pertanyaan_id");
+            $table->string("jawaban");
+            $table->string("catatan")->nullable();
+            $table->timestamps();
         });
     }
 
@@ -26,8 +29,6 @@ class AddVerifikasiToVisitorTable extends Migration
      */
     public function down()
     {
-        Schema::table('visitors', function (Blueprint $table) {
-            $table->dropColumn("verifikasi");
-        });
+        Schema::dropIfExists('jawabans');
     }
 }

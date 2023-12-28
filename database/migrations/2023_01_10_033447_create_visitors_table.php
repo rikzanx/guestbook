@@ -21,6 +21,11 @@ class CreateVisitorsTable extends Migration
             $table->string('tujuan');
             $table->string('foto_ktp');
             $table->string('nomor_kartu')->nullable();
+            $table->time("keluar")->nullable();
+            $table->string("pos_asal")->nullable();
+            $table->string("lainnya")->nullable();
+            $table->string('verifikasi')->default('Belum Terferivikasi');
+            $table->string('no_hp')->default('0');
             $table->timestamps();
         });
     }

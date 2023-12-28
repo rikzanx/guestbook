@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddPosAsalToVisitorTable extends Migration
+class CreatePertanyaanValuesTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,11 @@ class AddPosAsalToVisitorTable extends Migration
      */
     public function up()
     {
-        Schema::table('visitors', function (Blueprint $table) {
-            $table->string("pos_asal")->nullable();
+        Schema::create('pertanyaan_values', function (Blueprint $table) {
+            $table->id();
+            $table->integer("pertanyaan_id");
+            $table->text("value");
+            $table->timestamps();
         });
     }
 
@@ -25,8 +28,6 @@ class AddPosAsalToVisitorTable extends Migration
      */
     public function down()
     {
-        Schema::table('visitors', function (Blueprint $table) {
-            $table->dropColumn("pos_asal");
-        });
+        Schema::dropIfExists('pertanyaan_values');
     }
 }

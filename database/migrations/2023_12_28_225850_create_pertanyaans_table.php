@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddLainnyaToVisitorTable extends Migration
+class CreatePertanyaansTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,8 +13,12 @@ class AddLainnyaToVisitorTable extends Migration
      */
     public function up()
     {
-        Schema::table('visitors', function (Blueprint $table) {
-            $table->string("lainnya")->nullable();
+        Schema::create('pertanyaans', function (Blueprint $table) {
+            $table->id();
+            $table->string('kode')->unique();
+            $table->text('pertanyaan');
+            $table->text('catatan')->nullable();
+            $table->timestamps();
         });
     }
 
@@ -25,8 +29,6 @@ class AddLainnyaToVisitorTable extends Migration
      */
     public function down()
     {
-        Schema::table('visitors', function (Blueprint $table) {
-            $table->dropColumn("lainnya");
-        });
+        Schema::dropIfExists('pertanyaans');
     }
 }
