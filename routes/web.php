@@ -17,6 +17,7 @@ use App\Http\Controllers\SuratJalanController;
 use App\Http\Controllers\AdminSuratJalanController;
 use App\Http\Controllers\PosSuratJalanController;
 use App\Http\Controllers\WebhookController;
+use App\Http\Controllers\AmbilKibController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +36,7 @@ Route::post('guest/store', [GuestController::class,'store'])->name('gueststore')
 Route::resource('visitor',VisitorController::class);
 Route::resource('simb',SimbController::class);
 Route::resource('suratjalan',SuratJalanController::class);
+Route::resource('ambil-kib',AmbilKibController::class);
 
 Route::get('guest/verifikasi/{id}',[AdminController::class,'verifikasi'])->name('verifikasikib');
 Route::get('guest/verifikasiall',[AdminController::class,'verifikasiall'])->name('verifikasiall');
@@ -86,6 +88,7 @@ Route::group(['prefix' => 'admin'],function(){
 
 
 });
+
 Route::get('pos/login', [PosCustomAuthController::class, 'index'])->name('poslogin');
 Route::group(['prefix' => 'pos'],function(){
 

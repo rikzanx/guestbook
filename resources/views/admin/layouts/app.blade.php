@@ -106,86 +106,15 @@
               </p>
             </a>
           </li>
-          {{-- <li class="nav-item">
-            <a href="{{ route('blokir.index') }}" class="nav-link">
-              <i class="nav-icon fas fa-building"></i>
+          <li class="nav-item">
+            <a href="{{ route('admin.suratjalan.index') }}" class="nav-link">
+              <i class="nav-icon fas fa-user"></i>
               <p>
-                Profil Perusahaan
+                Data Master KIB
               </p>
             </a>
           </li>
-          <li class="nav-item">
-            <a href="{{ route('wallet.index') }}" class="nav-link">
-              <i class="nav-icon fas fa-wallet"></i>
-              <p>
-                Wallets
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{ route('transaction.create') }}" class="nav-link">
-              <i class="nav-icon fas fa-plus"></i>
-              <p>
-                Tambah transaksi
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{ route('slider.index') }}" class="nav-link">
-              <i class="nav-icon fas fa-images"></i>
-              <p>
-                Gambar Slider
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{ route('kategori.index') }}" class="nav-link">
-              <i class="nav-icon fas fa-list"></i>
-              <p>
-                Kategori
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{ route('produk.index') }}" class="nav-link">
-              <i class="nav-icon fas fa-box"></i>
-              <p>
-                Produk
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{ route('invoice.index') }}" class="nav-link">
-              <i class="nav-icon fas fa-file-alt"></i>
-              <p>
-                Invoice
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{ route('item.index') }}" class="nav-link">
-              <i class="nav-icon fas fa-box-open"></i>
-              <p>
-                Barang Terjual
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{ route('penawaran.index') }}" class="nav-link">
-              <i class="nav-icon fas fa-envelope-open"></i>
-              <p>
-                Penawaran
-              </p>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="{{ route('password.index') }}" class="nav-link">
-              <i class="nav-icon fas fa-key"></i>
-              <p>
-                Ganti Password Admin
-              </p>
-            </a>
-          </li> --}}
+          
           <li class="nav-item">
             <a href="{{ route('signout') }}" class="nav-link">
               <i class="nav-icon fas fa-sign-out-alt"></i>
